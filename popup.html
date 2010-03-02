@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  font-family: helvetica, arial, sans-serif;
+  font-size: 12px;
+  overflow: hidden;
+  min-width:300px;
+}
+
+a {
+  color:#0000CC;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.open_box {
+  display: block;
+  overflow: hidden;
+  margin-right: 4px;
+  margin-top: 2px;
+  height: 12px;
+  width: 12px;
+  float: left;
+  clear: left;
+  background-image: url(sprite_arrows.gif);
+  background-position: 0px -24px;
+  cursor: pointer;
+}
+
+.opened .open_box {
+  background-position:-12px -24px;
+}
+
+.item {
+  padding: 2px 0px;
+}
+
+.item_title {
+  display: block;
+  min-width: 300px;
+  padding-left: 15px;
+  cursor: pointer;
+}
+
+.item_desc {
+  min-width: 500px;
+  height: 0px;
+  display: block;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  -webkit-transition: height 0.2s ease-out;
+}
+
+#title {
+  display: block;
+  margin-left: auto;
+}
+
+.error {
+  white-space: nowrap;
+  color: red;
+}
+
+.more {
+  display: block;
+  text-align: right;
+  padding-top: 20px;
+  padding-right: 10px;
+  color: #88C;
+}
+
+</style>
+<script>
+var feedUrl = 'http://news.ycombinator.com/rss';//'http://news.google.com/?output=rss'
+var req;
+
+function main() {
+  req = new XMLHttpRequest();
+  req.onload = HandleRssResponse;
+  req.onerror = handleError;
+  req.open("GET", feedUrl, true);
+  req.send(null);
+}
+
+function HandleRssResponse() {
+  var doc = req.responseXML;
+  if (!doc) {
+    doc = parseXml(req.responseText);
+  }
+  if (!doc) {
+    handleFeedParsingFailed("Not a valid feed.");
+    return;
+  }
+  buildPreview(doc);
+}
+
+function handleError() {
+  handleFeedParsingFailed('Failed to fetch RSS feed.');
+}
+
+function handleFeedParsingFailed(error) {
+  var feed = document.getElementById("feed");
+  feed.className = "error"
+  feed.innerText = "Error: " + error;
+}
+
+function parseXml(xml) {
+  var xmlDoc;
+  try {
+    xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
+    xmlDoc.async = false;
+    xmlDoc.loadXML(xml);
+  } catch (e) {
+    xmlDoc = (new DOMParser).parseFromString(xml, 'text/xml');
+  }
+
+  return xmlDoc;
+}
+
+// The maximum number of feed items to show in the preview.
+var maxFeedItems = 15;
+
+function buildPreview(doc) {
+  var feed = document.getElementById("feed");
+  var entries = doc.getElementsByTagName('entry');
+  if (entries.length == 0) {
+    entries = doc.getElementsByTagName('item');
+  }
+  var count = Math.min(entries.length, maxFeedItems);
+  for (var i=0; i< count; i++) {
+    item = entries.item(i);
+    
+    //Grab the title
+    var itemTitle = item.getElementsByTagName('title')[0];
+    if (itemTitle) {
+      itemTitle = itemTitle.textContent;
+    } else {
+      itemTitle = "Unknown Title";
+    }
+    
+    //Grab the description
+    var itemDesc = item.getElementsByTagName('description')[0];
+    if (!itemDesc) {
+      itemDesc = item.getElementsByTagName('summary')[0];
+      if (!itemDesc) {
+        itemDesc = item.getElementsByTagName('content')[0];
+      }
+    }
+    if (itemDesc) {
+      itemDesc = itemDesc.childNodes[0].nodeValue;
+    } else {
+      itemDesc = '';
+    }
+    
+    //Grab the Link
+    var itemLink = item.getElementsByTagName('link')[0];
+    if (!itemLink) {
+      itemLink = item.getElementsByTagName('comments')[0];
+    }
+    if (itemLink) {
+      itemLink = itemLink.textContent;
+    } else {
+      itemLink = '';
+    }
+    
+    var item = document.createElement("div");
+    item.className = "item";
+    var title = document.createElement("a");
+    title.className = "item_title";
+    title.innerText = itemTitle;
+    title.href = itemLink;
+    title.addEventListener("click", openStory);
+    
+    item.appendChild(title);
+    feed.appendChild(item);
+  }
+  
+  function openStory() {
+    showUrl(this.href);
+  }
+  
+  // Show |url| in a new tab.
+  function showUrl(url) {
+    // Only allow http and https URLs.
+    if (url.indexOf("http:") != 0 && url.indexOf("https:") != 0) {
+      return;
+    }
+    chrome.tabs.create({url: url});
+  }
+}
+</script>
+</head>
+<body onload="main();">
+<h1>
+Hacker News:
+</h1>
+<div id="feed"></div>
+</body>
+</html>
