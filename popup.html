@@ -4,23 +4,17 @@
 <style>
 body {
   font-family: verdana,helvetica, arial, sans-serif;
-  font-size: 12px;
+  font-size: 10pt;
   overflow: hidden;
 }
-
-a {
-  color:#0000CC;
-  text-decoration: underline;
-  cursor: pointer;
-}
 #container {min-width:300; background:#F6F6EF;}
-#header {height:26px; width:100%; background: #f60; color:#222; font-size:10pt;}
+#header {height:26px; width:100%; background: #f60; color:#222;}
 
 #header img { border: 1px solid #fff; float:left; margin:3px;}
 
-#header a, #header span { color:#222; float:left; margin:7px 2px 0 5px; text-decoration:none;}
-#title, a#title { font-weight:bold; font-size:14px; margin-top:6px; }
-#feed {min-width:auto; margin:5px;}
+#header a, #header span { color:#222; float:left; margin:6px 2px 0 5px; text-decoration:none;}
+#title, a#title { font-weight:bold; font-size:14px; margin-top:5px; }
+#feed {min-width:auto; margin:5px; font-size:9pt;}
 #feed a {text-decoration:none; color:#000;}
 #feed a:visited {color:#828282;}
 
@@ -34,7 +28,6 @@ a {
   display: block;
   min-width: 300px;
   padding-left: 15px;
-  cursor: pointer;
 }
 
 .item_desc {
@@ -50,14 +43,6 @@ a {
 .error {
   white-space: nowrap;
   color: red;
-}
-
-.more {
-  display: block;
-  text-align: right;
-  padding-top: 20px;
-  padding-right: 10px;
-  color: #88C;
 }
 
 </style>
@@ -187,6 +172,8 @@ function buildPreview(doc) {
 			<img src="logo_tiny.gif">
 			<a id="title" href="http://news.ycombinator.com">Hacker News</a>
 			<a href="#">new</a>
+			<span>|</span>
+			<a href="#">leaders</a>
 			<span>|</span>
 			<a href="#">submit</a>
 		</div>
