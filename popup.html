@@ -156,11 +156,9 @@ function buildPreview(doc) {
     
     var item = document.createElement("div");
     item.className = "link";
-		var num = document.createElement("span");
-		var.innerText = (i+1);
     var title = document.createElement("a");
     title.className = "link_title";
-    title.innerText = num + itemTitle;
+    title.innerText = itemTitle;
     title.href = itemLink;
     title.addEventListener("click", openStory);
     
