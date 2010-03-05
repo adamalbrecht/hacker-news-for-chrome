@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  font-family: verdana,helvetica, arial, sans-serif;
+  font-size: 10pt;
+  overflow: hidden;
+}
+#container {min-width:300; background:#F6F6EF;}
+#header {height:26px; width:100%; background: #f60; color:#222;}
+
+#header img { border: 1px solid #fff; float:left; margin:3px;}
+
+#header a, #header span { color:#222; float:left; margin:6px 2px 0 5px; text-decoration:none;}
+#title, a#title { font-weight:bold; font-size:14px; margin-top:5px; }
+#feed {min-width:auto; margin:5px; font-size:9pt;}
+#feed a {text-decoration:none; color:#000;}
+#feed a:visited {color:#828282;}
+
+.link {
+  padding: 2px 0px;
+}
+
+.link span { margin-right:3px;}
+
+.link_title {
+  display: block;
+  min-width: 300px;
+  padding-left: 15px;
+}
+
+.item_desc {
+  min-width: 500px;
+  height: 0px;
+  display: block;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  -webkit-transition: height 0.2s ease-out;
+}
+
+.error {
+  white-space: nowrap;
+  color: red;
+}
+
+</style>
+</head>
+<body onload="main();">
+	<div id="container">
+		<div id="header">
+			<img src="logo_tiny.gif">
+			<a id="title" href="http://news.ycombinator.com">Hacker News</a>
+			<a href="#">new</a>
+			<span>|</span>
+			<a href="#">leaders</a>
+			<span>|</span>
+			<a href="#">submit</a>
+		</div>
+		<div id="feed">
+			<ol id="list" type="1"><li class="link"><a class="link_title" href="http://vichan.livejournal.com/392527.html">LiveJournal stripping users' affiliate links</a></li><li class="link"><a class="link_title" href="http://a1k0n.net/blah/archives/2010/03/index.html">Google AI Challenge: Winner post-mortem and source code</a></li><li class="link"><a class="link_title" href="http://www.vanadac.com/~dajhorn/novelties/ESR%20-%20Curse%20Of%20The%20Gifted.html">Eric S. Raymond - The Curse of the Gifted (2000)</a></li><li class="link"><a class="link_title" href="http://appft1.uspto.gov/netacgi/nph-Parser?Sect1=PTO2&amp;Sect2=HITOFF&amp;p=1&amp;u=/netahtml/PTO/search-bool.html&amp;r=1&amp;f=G&amp;l=50&amp;co1=AND&amp;d=PG01&amp;s1=20080270152&amp;OS=20080270152&amp;RS=20080270152">Did someone just patent the process of patent trolling? USPTO: 0080270152</a></li><li class="link"><a class="link_title" href="http://blog.cubeofm.com/your-high-iq-will-kill-your-startup">Your high IQ will kill your startup</a></li><li class="link"><a class="link_title" href="http://www.engadget.com/2010/03/03/coby-85-smartbook-feels-like-a-hundred-bucks-hands-on/">Coby $85 Smartbook Feels Like a Hundred Bucks</a></li><li class="link"><a class="link_title" href="http://ostatus.org/2010/03/04/its-started">It's started</a></li><li class="link"><a class="link_title" href="http://unbalanced-parentheses.nfshost.com/newlisptacklesglobalwarming">Global warming? Check for yourself</a></li><li class="link"><a class="link_title" href="http://storecrowd.com/blog/rails-backups/">Ruby on Rails Backup Solutions</a></li><li class="link"><a class="link_title" href="http://www.facebook.com/note.php?note_id=339013388919">Working with Mark Zuckerberg</a></li><li class="link"><a class="link_title" href="http://enfranchisedmind.com/blog/posts/what-killed-lisp-could-kill-haskell-as-well/#comment-37144">Clojure won't win the battle but may win the war</a></li><li class="link"><a class="link_title" href="http://torrentfreak.com/ubisofts-uber-drm-cracked-within-a-day-100304/?utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed%3A+Torrentfreak+%28Torrentfreak%29">Ubisoft’s Uber DRM Cracked Within a Day</a></li><li class="link"><a class="link_title" href="http://www.immadsnewworld.com/2010/03/presentation-and-pitching-skills-for.html">Presentation and Pitching Skills for Entrepreneurs</a></li><li class="link"><a class="link_title" href="http://daringfireball.net/2010/03/regarding_old_apple_microsoft_suit">Good ideas are meant to spread</a></li><li class="link"><a class="link_title" href="http://highscalability.com/blog/2010/3/4/how-myspace-tested-their-live-site-with-1-million-concurrent.html">How MySpace test with 1 Million concurrent users</a></li></ol>
+		</div>
+	</div>
+
+</body>
+</html>
