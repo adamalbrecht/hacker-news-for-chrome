@@ -4,7 +4,7 @@
   "description": "Displays recent stories from Hacker News",
   "browser_action": {
     "default_title": "Hacker News",
-    "default_icon": "ycombinator-logo.gif",
+    "default_icon": "logo_large.gif",
     "popup": "popup.html"
   },
   "permissions": [

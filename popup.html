@@ -3,10 +3,9 @@
 <head>
 <style>
 body {
-  font-family: helvetica, arial, sans-serif;
+  font-family: verdana,helvetica, arial, sans-serif;
   font-size: 12px;
   overflow: hidden;
-  min-width:300px;
 }
 
 a {
@@ -14,30 +13,24 @@ a {
   text-decoration: underline;
   cursor: pointer;
 }
+#container {min-width:300; background:#F6F6EF;}
+#header {height:26px; width:100%; background: #f60; color:#222; font-size:10pt;}
 
-.open_box {
-  display: block;
-  overflow: hidden;
-  margin-right: 4px;
-  margin-top: 2px;
-  height: 12px;
-  width: 12px;
-  float: left;
-  clear: left;
-  background-image: url(sprite_arrows.gif);
-  background-position: 0px -24px;
-  cursor: pointer;
-}
+#header img { border: 1px solid #fff; float:left; margin:3px;}
 
-.opened .open_box {
-  background-position:-12px -24px;
-}
+#header a, #header span { color:#222; float:left; margin:7px 2px 0 5px; text-decoration:none;}
+#title, a#title { font-weight:bold; font-size:14px; margin-top:6px; }
+#feed {min-width:auto; margin:5px;}
+#feed a {text-decoration:none; color:#000;}
+#feed a:visited {color:#828282;}
 
-.item {
+.link {
   padding: 2px 0px;
 }
 
-.item_title {
+.link span { margin-right:3px;}
+
+.link_title {
   display: block;
   min-width: 300px;
   padding-left: 15px;
@@ -52,11 +45,6 @@ a {
   padding: 0px;
   margin: 0px;
   -webkit-transition: height 0.2s ease-out;
-}
-
-#title {
-  display: block;
-  margin-left: auto;
 }
 
 .error {
@@ -167,10 +155,12 @@ function buildPreview(doc) {
     }
     
     var item = document.createElement("div");
-    item.className = "item";
+    item.className = "link";
+		var num = document.createElement("span");
+		var.innerText = (i+1);
     var title = document.createElement("a");
-    title.className = "item_title";
-    title.innerText = itemTitle;
+    title.className = "link_title";
+    title.innerText = num + itemTitle;
     title.href = itemLink;
     title.addEventListener("click", openStory);
     
@@ -194,9 +184,15 @@ function buildPreview(doc) {
 </script>
 </head>
 <body onload="main();">
-<h1>
-Hacker News:
-</h1>
-<div id="feed"></div>
+	<div id="container">
+		<div id="header">
+			<img src="logo_tiny.gif">
+			<a id="title" href="http://news.ycombinator.com">Hacker News</a>
+			<a href="#">new</a>
+			<span>|</span>
+			<a href="#">submit</a>
+		</div>
+		<div id="feed"></div>
+	</div>
 </body>
 </html>
