@@ -97,7 +97,7 @@ function parseXml(xml) {
 var maxFeedItems = 15;
 
 function buildPreview(doc) {
-  var feed = document.getElementById("feed");
+  var feed = document.getElementById("list");
   var entries = doc.getElementsByTagName('entry');
   if (entries.length == 0) {
     entries = doc.getElementsByTagName('item');
@@ -139,7 +139,7 @@ function buildPreview(doc) {
       itemLink = '';
     }
     
-    var item = document.createElement("div");
+    var item = document.createElement("li");
     item.className = "link";
     var title = document.createElement("a");
     title.className = "link_title";
@@ -177,7 +177,9 @@ function buildPreview(doc) {
 			<span>|</span>
 			<a href="#">submit</a>
 		</div>
-		<div id="feed"></div>
+		<div id="feed">
+			<ol id="list" type="1"></ol>
+		</div>
 	</div>
 </body>
 </html>
