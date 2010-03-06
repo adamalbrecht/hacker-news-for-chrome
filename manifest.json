@@ -2,10 +2,11 @@
   "name": "Hacker News",
   "version": "1.0",
   "description": "Displays recent stories from Hacker News",
-  "icons": { "128": "logo_large.gif" },
+  "icons": { "48": "icon48.gif",
+	          "128": "icon128.gif" },
   "browser_action": {
     "default_title": "Hacker News",
-    "default_icon": "logo_tiny.gif",
+    "default_icon": "icon18.gif",
     "popup": "popup.html"
   },
   "permissions": [
