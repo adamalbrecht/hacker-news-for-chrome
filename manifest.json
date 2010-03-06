@@ -1,16 +1,15 @@
 {
   "name": "Hacker News",
-  "version": "0.1",
+  "version": "1.0",
   "description": "Displays recent stories from Hacker News",
   "icons": { "128": "logo_large.gif" },
   "browser_action": {
     "default_title": "Hacker News",
-    "default_icon": "logo_large.gif",
+    "default_icon": "logo_tiny.gif",
     "popup": "popup.html"
   },
   "permissions": [
     "tabs",
-    "http://news.ycombinator.com/*",
-    "http://news.google.com/*"
+    "http://news.ycombinator.com/*"
   ]
 }

@@ -95,11 +95,21 @@ function parseXml(xml) {
 var maxFeedItems = 15;
 
 function buildPreview(doc) {
+	var header = document.getElementById("header");
   var feed = document.getElementById("feed");
   var entries = doc.getElementsByTagName('entry');
   if (entries.length == 0) {
     entries = doc.getElementsByTagName('item');
   }
+
+	//Set Title Link
+	var title = document.getElementById("title");
+	title.addEventListener("click", openLink);
+
+	//Create Submit Link
+	var submitLink = document.getElementById("submitLink");
+	submitLink.addEventListener("click", submitCurrentTab);
+	
   var count = Math.min(entries.length, maxFeedItems);
   for (var i=0; i< count; i++) {
     item = entries.item(i);
@@ -110,20 +120,6 @@ function buildPreview(doc) {
       itemTitle = itemTitle.textContent;
     } else {
       itemTitle = "Unknown Title";
-    }
-    
-    //Grab the description
-    var itemDesc = item.getElementsByTagName('description')[0];
-    if (!itemDesc) {
-      itemDesc = item.getElementsByTagName('summary')[0];
-      if (!itemDesc) {
-        itemDesc = item.getElementsByTagName('content')[0];
-      }
-    }
-    if (itemDesc) {
-      itemDesc = itemDesc.childNodes[0].nodeValue;
-    } else {
-      itemDesc = '';
     }
     
     //Grab the Link
@@ -154,12 +150,12 @@ function buildPreview(doc) {
     title.className = "link_title";
     title.innerText = itemTitle;
     title.href = itemLink;
-    title.addEventListener("click", openStory);
+    title.addEventListener("click", openLink);
     var comments = document.createElement("a");
 		comments.className = "comments";
 		comments.innerText = "(comments)";
 		comments.href = commentsLink;
-		comments.addEventListener("click", openStory);
+		comments.addEventListener("click", openLink);
 
 
 		link_col.appendChild(title);
@@ -169,18 +165,27 @@ function buildPreview(doc) {
     feed.appendChild(row);
   }
   
-  function openStory() {
-    showUrl(this.href);
+  function openLink() {
+    openUrl(this.href);
   }
   
   // Show |url| in a new tab.
-  function showUrl(url) {
+  function openUrl(url) {
     // Only allow http and https URLs.
     if (url.indexOf("http:") != 0 && url.indexOf("https:") != 0) {
       return;
     }
     chrome.tabs.create({url: url});
   }
+	//Submit the current tab
+	function submitCurrentTab() {
+		chrome.windows.getCurrent(function(win){
+			chrome.tabs.getSelected(win.id, function(tab){
+				var submit_url = "http://news.ycombinator.com/submitlink?u=" + encodeURIComponent(tab.url) + "&t=" + encodeURIComponent(tab.title);
+				openUrl(submit_url);
+			});
+		});
+	}
 }
 </script>
 </head>
@@ -190,7 +195,7 @@ function buildPreview(doc) {
 			<img src="logo_tiny.gif">
 			<a id="title" href="http://news.ycombinator.com">Hacker News</a>
 			<span>|</span>
-			<a href="#">Submit Current Page</a>
+			<a id="submitLink" href="http://news.ycombinator.com/submitlink">Submit Current Page</a>
 		</div>
 		<table id="feed" cellspacing="3" cellpadding="0">
 		</table>
