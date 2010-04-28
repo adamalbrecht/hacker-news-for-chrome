@@ -146,7 +146,7 @@ function buildPreview(doc) {
     if (url.indexOf("http:") != 0 && url.indexOf("https:") != 0) {
       return;
     }
-    chrome.tabs.create({url: url});
+    chrome.tabs.create({url: url, selected: false});
   }
 	//Submit the current tab
 	function submitCurrentTab() {
