@@ -137,23 +137,23 @@ function buildPreview(doc) {
   }
   
   function openLink() {
-    openUrl(this.href);
+    openUrl(this.href, false);
   }
   
   // Show |url| in a new tab.
-  function openUrl(url) {
+  function openUrl(url, take_focus) {
     // Only allow http and https URLs.
     if (url.indexOf("http:") != 0 && url.indexOf("https:") != 0) {
       return;
     }
-    chrome.tabs.create({url: url, selected: false});
+    chrome.tabs.create({url: url, selected: take_focus});
   }
 	//Submit the current tab
 	function submitCurrentTab() {
 		chrome.windows.getCurrent(function(win){
 			chrome.tabs.getSelected(win.id, function(tab){
 				var submit_url = "http://news.ycombinator.com/submitlink?u=" + encodeURIComponent(tab.url) + "&t=" + encodeURIComponent(tab.title);
-				openUrl(submit_url);
+				openUrl(submit_url, true);
 			});
 		});
 	}
