@@ -19,100 +19,110 @@ a:hover {text-decoration:underline;}
 .error {white-space: nowrap;color: red;}
 </style>
 <script>
-var feedUrl = 'http://news.ycombinator.com/rss';
-var maxFeedItems = 15;
-var req;
+  var feedUrl = 'http://news.ycombinator.com/rss';
+  var maxFeedItems = 15;
+  var req;
 
-function main() {
-  req = new XMLHttpRequest();
-  req.onload = HandleRssResponse;
-  req.onerror = handleError;
-  req.open("GET", feedUrl, true);
-  req.send(null);
-}
-
-function HandleRssResponse() {
-  var doc = req.responseXML;
-  if (!doc) {
-    doc = parseXml(req.responseText);
-  }
-  if (!doc) {
-    handleFeedParsingFailed("Not a valid feed.");
-    return;
-  }
-  buildPreview(doc);
-}
-
-function handleError() {
-  handleFeedParsingFailed('Failed to fetch RSS feed.');
-}
-
-function handleFeedParsingFailed(error) {
-  var feed = document.getElementById("feed");
-  feed.className = "error"
-  feed.innerText = "Error: " + error;
-}
-
-function parseXml(xml) {
-  var xmlDoc;
-  try {
-    xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
-    xmlDoc.async = false;
-    xmlDoc.loadXML(xml);
-  } catch (e) {
-    xmlDoc = (new DOMParser).parseFromString(xml, 'text/xml');
+  function main() {
+    req = new XMLHttpRequest();
+    req.onload = HandleRssResponse;
+    req.onerror = handleError;
+    req.open("GET", feedUrl, true);
+    req.send(null);
   }
 
-  return xmlDoc;
-}
-
-function buildPreview(doc) {
-	var header = document.getElementById("header");
-  var feed = document.getElementById("feed");
-  var entries = doc.getElementsByTagName('entry');
-  if (entries.length == 0) {
-    entries = doc.getElementsByTagName('item');
-  }
-
-	//Set Title Link
-	var title = document.getElementById("title");
-	title.addEventListener("click", openLink);
-
-	//Create Submit Link
-	var submitLink = document.getElementById("submitLink");
-	submitLink.addEventListener("click", submitCurrentTab);
-	
-  var count = Math.min(entries.length, maxFeedItems);
-  for (var i=0; i< count; i++) {
-    item = entries.item(i);
-    
-    //Grab the title
-    var itemTitle = item.getElementsByTagName('title')[0];
-    if (itemTitle) {
-      itemTitle = itemTitle.textContent;
-    } else {
-      itemTitle = "Unknown Title";
+  function HandleRssResponse() {
+    var doc = req.responseXML;
+    if (!doc) {
+      doc = parseXml(req.responseText);
     }
-    
-    //Grab the Link
-    var itemLink = item.getElementsByTagName('link')[0];
-    if (!itemLink) {
-      itemLink = item.getElementsByTagName('comments')[0];
+    if (!doc) {
+      handleFeedParsingFailed("Not a valid feed.");
+      return;
     }
-    if (itemLink) {
-      itemLink = itemLink.textContent;
-    } else {
-      itemLink = '';
+    var links = parseHNLinks(doc);
+    buildPopup(links);
+  }
+
+  function handleError() {
+    handleFeedParsingFailed('Failed to fetch RSS feed.');
+  }
+
+  function handleFeedParsingFailed(error) {
+    var feed = document.getElementById("feed");
+    feed.className = "error"
+    feed.innerText = "Error: " + error;
+  }
+
+  function parseXml(xml) {
+    var xmlDoc;
+    try {
+      xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
+      xmlDoc.async = false;
+      xmlDoc.loadXML(xml);
+    } catch (e) {
+      xmlDoc = (new DOMParser).parseFromString(xml, 'text/xml');
     }
 
-		//Grab the comments link
-		var commentsLink = item.getElementsByTagName('comments')[0];
-		if (commentsLink) {
-			commentsLink = commentsLink.textContent;
-		} else {
-			commentsLink = '';
-		}
+    return xmlDoc;
+  }
+
+  function parseHNLinks(doc) {
+    var header = document.getElementById("header");
+    var feed = document.getElementById("feed");
+    var entries = doc.getElementsByTagName('entry');
+    if (entries.length == 0) {
+      entries = doc.getElementsByTagName('item');
+    }
+
+    //Set Title Link
+    var title = document.getElementById("title");
+    title.addEventListener("click", openLink);
+
+    //Create Submit Link
+    var submitLink = document.getElementById("submitLink");
+    submitLink.addEventListener("click", submitCurrentTab);
     
+    var count = Math.min(entries.length, maxFeedItems);
+    var links = new Array();
+    for (var i=0; i< count; i++) {
+      item = entries.item(i);
+      var hnLink = new Object();
+      //Grab the title
+      var itemTitle = item.getElementsByTagName('title')[0];
+      if (itemTitle) {
+        hnLink.Title = itemTitle.textContent;
+      } else {
+        hnLink.Title = "Unknown Title";
+      }
+      
+      //Grab the Link
+      var itemLink = item.getElementsByTagName('link')[0];
+      if (!itemLink) {
+        itemLink = item.getElementsByTagName('comments')[0];
+      }
+      if (itemLink) {
+        hnLink.Link = itemLink.textContent;
+      } else {
+        hnLink.Link = '';
+      }
+
+      //Grab the comments link
+      var commentsLink = item.getElementsByTagName('comments')[0];
+      if (commentsLink) {
+        hnLink.CommentsLink = commentsLink.textContent;
+      } else {
+        hnLink.CommentsLink = '';
+      }
+      
+      links.push(hnLink);
+    }
+    return links;
+  }
+
+function buildPopup(links) {
+  for (var i=0; i<links.length; i++) {
+    hnLink = links[i];
     var row = document.createElement("tr");
     row.className = "link";
 		var num = document.createElement("td");
@@ -120,13 +130,13 @@ function buildPreview(doc) {
 		var link_col = document.createElement("td")
     var title = document.createElement("a");
     title.className = "link_title";
-    title.innerText = itemTitle;
-    title.href = itemLink;
+    title.innerText = hnLink.Title;
+    title.href = hnLink.Link;
     title.addEventListener("click", openLink);
     var comments = document.createElement("a");
 		comments.className = "comments";
 		comments.innerText = "(comments)";
-		comments.href = commentsLink;
+		comments.href = hnLink.CommentsLink;
 		comments.addEventListener("click", openLink);
 
 		link_col.appendChild(title);
@@ -135,6 +145,7 @@ function buildPreview(doc) {
 		row.appendChild(link_col)
     feed.appendChild(row);
   }
+}
   
   function openLink() {
     openUrl(this.href, false);
@@ -157,7 +168,6 @@ function buildPreview(doc) {
 			});
 		});
 	}
-}
 </script>
 </head>
 <body onload="main();">
