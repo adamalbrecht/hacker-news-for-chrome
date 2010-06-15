@@ -4,10 +4,13 @@
 <script src="core.js" />
 <script src="json2.js" />
 <script>
-var requestInterval = 60000; //miliseconds
+//If any options are not already set, they will be set to defaults here
+SetInitialOption("HN.RequestInterval", 1200000);
+SetInitialOption("HN.Notifications", true);
+SetInitialOption("HN.BackgroundTabs", false);
 function startRequest() {
 	UpdateFeed();
-	window.setTimeout(startRequest, requestInterval);
+	window.setTimeout(startRequest, localStorage["HN.RequestInterval"]);
 }
 </script>
 </head>

@@ -5,6 +5,12 @@ var buildPopupAfterResponse = false;
 var OnFeedSuccess = null;
 var OnFeedFail = null;
 
+function SetInitialOption(key, value) {
+	if (localStorage[key] == null) {
+		localStorage[key] = value;
+	}
+}
+
 function UpdateFeed() {
   req = new XMLHttpRequest();
   req.onload = HandleRssResponse;
@@ -117,7 +123,7 @@ function RetrieveLinksFromLocalStorage() {
 }
 
 function openLink() {
-  openUrl(this.href, false);
+  openUrl(this.href, (localStorage['HN.BackgroundTabs'] == 'false'));
 }
 
 // Show |url| in a new tab.
