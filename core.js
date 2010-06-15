@@ -134,3 +134,21 @@ function openUrl(url, take_focus) {
   }
   chrome.tabs.create({url: url, selected: take_focus});
 }
+	
+	function hideElement(id) {
+		var e = document.getElementById(id);
+		e.style.display = 'none';
+	}
+	
+	function showElement(id) {
+		var e = document.getElementById(id);
+    	e.style.display = 'block';
+	}
+	
+	function toggle(id) {
+     var e = document.getElementById(id);
+     if(e.style.display == 'block')
+        e.style.display = 'none';
+     else
+        e.style.display = 'block';
+  }

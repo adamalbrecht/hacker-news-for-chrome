@@ -2,10 +2,21 @@
 <html>
 <head>
 	<title>Hacker News for Google Chrome Options</title>
+	<script type="text/javascript" src="core.js" />
 	<script type="text/javascript">
+    var selectReqInterval;
+    var radioNotifications;
+    var radioBackgroundTabs;
+    
+    function initVariables() {
+			selectReqInterval = document.getElementById("RequestInterval");
+			radioNotifications = document.getElementsByName("Notifications");
+			radioBackgroundTabs = document.getElementsByName("BackgroundTabs");
+    }
+    
 		function restoreOptions() {
+      initVariables();
 			var reqInterval = localStorage["HN.RequestInterval"];
-			var selectReqInterval = document.getElementById("RequestInterval");
 			for (var i=0; i<selectReqInterval.children.length; i++) {
 				if (selectReqInterval[i].value == reqInterval) {
 					selectReqInterval[i].selected = "true";
@@ -13,26 +24,49 @@
 				}
 			}
 			var notifications = localStorage["HN.Notifications"];
-			var radioNotifications = document.getElementsByName("Notifications");
 			for (var i=0; i<radioNotifications.length; i++) {
 				if (radioNotifications[i].value == notifications) {
 					radioNotifications[i].checked = "true";
 				}
 			}
 			var backgroundTabs = localStorage["HN.BackgroundTabs"];
-			var radioBackgroundTabs = document.getElementsByName("BackgroundTabs");
 			for (var i=0; i<radioBackgroundTabs.length; i++) {
 				if (radioBackgroundTabs[i].value == backgroundTabs) {
 					radioBackgroundTabs[i].checked = "true";
 				}
 			}
 		}
+		
+		function saveOptions() {
+      var interval = selectReqInterval.children[selectReqInterval.selectedIndex].value;
+      localStorage["HN.RequestInterval"] = interval;
+      
+			for (var i=0; i<radioNotifications.length; i++) {
+        if (radioNotifications[i].checked == true) {
+          localStorage["HN.Notifications"] = radioNotifications[i].value;
+          break;
+        }
+			}
+			
+			for (var i=0; i<radioBackgroundTabs.length; i++) {
+        if (radioBackgroundTabs[i].checked == true) {
+          localStorage["HN.BackgroundTabs"] = radioBackgroundTabs[i].value;
+          break;
+        }
+			}
+			showElement("Saved");
+		}
+		
+		function onChange() {
+      hideElement("Saved");
+		}
+		
 	</script>
 </head>
 <body onLoad="restoreOptions()">
 	<h1>Hacker News Options</h1>
 	<label for="RequestInterval">Update every:</label><br/>
-	<select id="RequestInterval" name="RequestInterval">
+	<select id="RequestInterval" name="RequestInterval" onChange="onChange()">
 		<option value="300000">5 minutes</option>
 		<option value="600000">10 minutes</option>
 		<option	value="900000">15 minutes</option>
@@ -42,10 +76,13 @@
 		<option value="3600000">1 hour</option>
 	</select><br/><br/><br/>
 	<label for="Notifications">Show notifications for new top stories?</label><br/>
-	<input type="radio" name="Notifications" value="true"> Yes<br/>
-	<input type="radio" name="Notifications" value="false"> No<br/>
+	<input type="radio" name="Notifications" value="true" onChange="onChange()"> Yes<br/>
+	<input type="radio" name="Notifications" value="false" onChange="onChange()"> No<br/>
 	<br/><br/>
 	<label for="BackgroundTabs">Open links in background tabs?</label><br/>
-	<input type="radio" name="BackgroundTabs" value="true"> Yes<br/>
-	<input type="radio" name="BackgroundTabs" value="false"> No<br/>
+	<input type="radio" name="BackgroundTabs" value="true" onChange="onChange()"> Yes<br/>
+	<input type="radio" name="BackgroundTabs" value="false" onChange="onChange()"> No<br/>
+	<br/><br/>
+	<button onclick="saveOptions()">Save</button>
+	<span id="Saved" style="display:none;">Saved!</span>
 </body>
