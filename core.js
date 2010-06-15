@@ -4,11 +4,23 @@ var req;
 var buildPopupAfterResponse = false;
 var OnFeedSuccess = null;
 var OnFeedFail = null;
+var retryMilliseconds = 120000;
 
 function SetInitialOption(key, value) {
 	if (localStorage[key] == null) {
 		localStorage[key] = value;
 	}
+}
+
+function UpdateIfReady() {
+  if (localStorage["HN.LastRefresh"] == null) {
+    UpdateFeed();
+  }
+  var lastRefresh = localStorage["HN.LastRefresh"];
+  var interval = localStorage["HN.RequestInterval"];
+  if (lastRefresh + interval > (new Date()).getTime()) {
+    UpdateFeed();
+  }
 }
 
 function UpdateFeed() {
@@ -29,11 +41,33 @@ function HandleRssResponse() {
     return;
   }
  	links = parseHNLinks(doc);
+ 	if (localStorage['HN.Notifications'] == 'true') {
+    if (localStorage['HN.LastNotificationTitle'] == null || localStorage['HN.LastNotificationTitle'] != links[0].Title) {
+      ShowLinkNotification(links[0]);
+      localStorage['HN.LastNotificationTitle'] = links[0].Title;
+    }
+ 	}
 	SaveLinksToLocalStorage(links);
 	if (buildPopupAfterResponse == true) {
 		buildPopup(links);
 		buildPopupAfterResponse = false;
 	}
+	localStorage["HN.LastRefresh"] = (new Date()).getTime();
+}
+
+function DebugMessage(message) {
+  var notification = webkitNotifications.createNotification(
+    "icon48.gif",
+    "DEBUG",
+    message
+  );
+  notification.show();
+
+}
+
+function ShowLinkNotification(link) {
+  var notification = webkitNotifications.createHTMLNotification("notification.html");
+  notification.show();
 }
 
 function handleError() {
@@ -44,6 +78,7 @@ function handleFeedParsingFailed(error) {
   var feed = document.getElementById("feed");
   feed.className = "error"
   feed.innerText = "Error: " + error;
+  localStorage["HN.LastRefresh"] = localStorage["HN.LastRefresh"] + retryMilliseconds;
 }
 
 function parseXml(xml) {

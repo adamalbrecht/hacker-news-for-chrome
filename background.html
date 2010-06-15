@@ -9,9 +9,10 @@ SetInitialOption("HN.RequestInterval", 1200000);
 SetInitialOption("HN.Notifications", true);
 SetInitialOption("HN.BackgroundTabs", false);
 function startRequest() {
-	UpdateFeed();
+	UpdateIfReady();
 	window.setTimeout(startRequest, localStorage["HN.RequestInterval"]);
 }
+
 </script>
 </head>
 <body onload='startRequest()'>

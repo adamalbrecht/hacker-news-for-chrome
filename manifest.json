@@ -13,6 +13,7 @@
 	"options_page":"options.html",
   "permissions": [
     "tabs",
-    "http://news.ycombinator.com/*"
+    "http://news.ycombinator.com/*",
+    "notifications"
   ]
 }
