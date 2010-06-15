@@ -9,6 +9,7 @@
     "default_icon": "icon18.gif",
     "popup": "popup.html"
   },
+	"background_page":"background.html",
   "permissions": [
     "tabs",
     "http://news.ycombinator.com/*"

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="core.js" />
+<script src="json2.js" />
+<script>
+var requestInterval = 60000; //miliseconds
+function startRequest() {
+	UpdateFeed();
+	window.setTimeout(startRequest, requestInterval);
+}
+</script>
+</head>
+<body onload='startRequest()'>
+</body>
+</html>

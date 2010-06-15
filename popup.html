@@ -5,160 +5,106 @@
 body {font-family: verdana,helvetica, arial, sans-serif;font-size: 10pt;overflow: hidden;}
 a {text-decoration:none; color:#000;}
 a:hover {text-decoration:underline;}
-#container { background:#F6F6EF; width:350px;}
+#container, #spinner { background:#F6F6EF; width:350px;}
 #header {height:26px; background: #f60; color:#222;}
 #header img { border: 1px solid #fff; float:left; margin:3px;}
 #header a, #header span { color:#222; float:left; margin:5px 2px 0 5px; }
 #title, a#title { font-weight:bold; font-size:14px; margin-top:5px; }
 #feed {min-width:auto; margin:5px; font-size:9pt; padding-bottom:2px; }
-#feed table, #feed a:visited, #feed a.comments, #feed td:nth-child(1) { color:#828282;}
+#feed table, #feed a:visited, #feed a.comments, #feed td:nth-child(1), #footer, #footer a { color:#828282;}
 #feed td { vertical-align:top; }
 .link { padding: 2px 0px; }
 .link span { margin-right:3px;}
 .comments { font-size:7pt; margin-left:5px; }
 .error {white-space: nowrap;color: red;}
+#footer {float:right; font-size:11px;}
+#spinner {height:300px; text-align:center; padding-top:50px;}
 </style>
+<script src="core.js" />
+<script src="json2.js" />
 <script>
-  var feedUrl = 'http://news.ycombinator.com/rss';
-  var maxFeedItems = 15;
-  var req;
-
   function main() {
-    req = new XMLHttpRequest();
-    req.onload = HandleRssResponse;
-    req.onerror = handleError;
-    req.open("GET", feedUrl, true);
-    req.send(null);
+		if (localStorage['HN.NumLinks'] == null)
+		{
+			buildPopupAfterResponse = true;
+			UpdateFeed();
+		}
+		else {
+			buildPopup(RetrieveLinksFromLocalStorage());
+		}
   }
 
-  function HandleRssResponse() {
-    var doc = req.responseXML;
-    if (!doc) {
-      doc = parseXml(req.responseText);
-    }
-    if (!doc) {
-      handleFeedParsingFailed("Not a valid feed.");
-      return;
-    }
-    var links = parseHNLinks(doc);
-    buildPopup(links);
+	function buildPopup(links) {
+	  var header = document.getElementById("header");
+	  var feed = document.getElementById("feed");
+
+	  //Setup Title Link
+	  var title = document.getElementById("title");
+	  title.addEventListener("click", openLink);
+
+	  //Setup Submit Link
+	  var submitLink = document.getElementById("submitLink");
+	  submitLink.addEventListener("click", submitCurrentTab);
+	
+		//Setup Refresh Link
+		var refreshLink = document.getElementById("refresh");
+		refreshLink.addEventListener("click", refreshLinks);
+
+	  for (var i=0; i<links.length; i++) {
+	    hnLink = links[i];
+	    var row = document.createElement("tr");
+	    row.className = "link";
+			var num = document.createElement("td");
+			num.innerText = i+1;
+			var link_col = document.createElement("td")
+	    var title = document.createElement("a");
+	    title.className = "link_title";
+	    title.innerText = hnLink.Title;
+	    title.href = hnLink.Link;
+	    title.addEventListener("click", openLink);
+	    var comments = document.createElement("a");
+			comments.className = "comments";
+			comments.innerText = "(comments)";
+			comments.href = hnLink.CommentsLink;
+			comments.addEventListener("click", openLink);
+
+			link_col.appendChild(title);
+			link_col.appendChild(comments);
+	    row.appendChild(num);
+			row.appendChild(link_col)
+	    feed.appendChild(row);
+	  }
+		hideElement("spinner");
+		showElement("container");
+	}
+	
+	function refreshLinks() {
+		var linkTable = document.getElementById("feed");
+		while(linkTable.hasChildNodes()) linkTable.removeChild(linkTable.firstChild); //Remove all current links
+		toggle("container");
+		toggle("spinner");
+		buildPopupAfterResponse = true;
+		UpdateFeed(null, null);
+	}
+	
+	function hideElement(id) {
+		var e = document.getElementById(id);
+		e.style.display = 'none';
+	}
+	
+	function showElement(id) {
+		var e = document.getElementById(id);
+    	e.style.display = 'block';
+	}
+	
+	function toggle(id) {
+     var e = document.getElementById(id);
+     if(e.style.display == 'block')
+        e.style.display = 'none';
+     else
+        e.style.display = 'block';
   }
-
-  function handleError() {
-    handleFeedParsingFailed('Failed to fetch RSS feed.');
-  }
-
-  function handleFeedParsingFailed(error) {
-    var feed = document.getElementById("feed");
-    feed.className = "error"
-    feed.innerText = "Error: " + error;
-  }
-
-  function parseXml(xml) {
-    var xmlDoc;
-    try {
-      xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
-      xmlDoc.async = false;
-      xmlDoc.loadXML(xml);
-    } catch (e) {
-      xmlDoc = (new DOMParser).parseFromString(xml, 'text/xml');
-    }
-
-    return xmlDoc;
-  }
-
-  function parseHNLinks(doc) {
-    var header = document.getElementById("header");
-    var feed = document.getElementById("feed");
-    var entries = doc.getElementsByTagName('entry');
-    if (entries.length == 0) {
-      entries = doc.getElementsByTagName('item');
-    }
-
-    //Set Title Link
-    var title = document.getElementById("title");
-    title.addEventListener("click", openLink);
-
-    //Create Submit Link
-    var submitLink = document.getElementById("submitLink");
-    submitLink.addEventListener("click", submitCurrentTab);
-    
-    var count = Math.min(entries.length, maxFeedItems);
-    var links = new Array();
-    for (var i=0; i< count; i++) {
-      item = entries.item(i);
-      var hnLink = new Object();
-      //Grab the title
-      var itemTitle = item.getElementsByTagName('title')[0];
-      if (itemTitle) {
-        hnLink.Title = itemTitle.textContent;
-      } else {
-        hnLink.Title = "Unknown Title";
-      }
-      
-      //Grab the Link
-      var itemLink = item.getElementsByTagName('link')[0];
-      if (!itemLink) {
-        itemLink = item.getElementsByTagName('comments')[0];
-      }
-      if (itemLink) {
-        hnLink.Link = itemLink.textContent;
-      } else {
-        hnLink.Link = '';
-      }
-
-      //Grab the comments link
-      var commentsLink = item.getElementsByTagName('comments')[0];
-      if (commentsLink) {
-        hnLink.CommentsLink = commentsLink.textContent;
-      } else {
-        hnLink.CommentsLink = '';
-      }
-      
-      links.push(hnLink);
-    }
-    return links;
-  }
-
-function buildPopup(links) {
-  for (var i=0; i<links.length; i++) {
-    hnLink = links[i];
-    var row = document.createElement("tr");
-    row.className = "link";
-		var num = document.createElement("td");
-		num.innerText = i+1;
-		var link_col = document.createElement("td")
-    var title = document.createElement("a");
-    title.className = "link_title";
-    title.innerText = hnLink.Title;
-    title.href = hnLink.Link;
-    title.addEventListener("click", openLink);
-    var comments = document.createElement("a");
-		comments.className = "comments";
-		comments.innerText = "(comments)";
-		comments.href = hnLink.CommentsLink;
-		comments.addEventListener("click", openLink);
-
-		link_col.appendChild(title);
-		link_col.appendChild(comments);
-    row.appendChild(num);
-		row.appendChild(link_col)
-    feed.appendChild(row);
-  }
-}
-  
-  function openLink() {
-    openUrl(this.href, false);
-  }
-  
-  // Show |url| in a new tab.
-  function openUrl(url, take_focus) {
-    // Only allow http and https URLs.
-    if (url.indexOf("http:") != 0 && url.indexOf("https:") != 0) {
-      return;
-    }
-    chrome.tabs.create({url: url, selected: take_focus});
-  }
+ 
 	//Submit the current tab
 	function submitCurrentTab() {
 		chrome.windows.getCurrent(function(win){
@@ -171,6 +117,9 @@ function buildPopup(links) {
 </script>
 </head>
 <body onload="main();">
+	<div id="spinner" style="display:none">
+		<img src="ajax-loader.gif">
+	</div>
 	<div id="container">
 		<div id="header">
 			<img src="icon18.gif">
@@ -180,6 +129,9 @@ function buildPopup(links) {
 		</div>
 		<table id="feed" cellspacing="3" cellpadding="0">
 		</table>
+		<div id="footer">
+			<a href="#refresh" id="refresh">Refresh</a> | <a href="#settings" id="settings">Settings</a>
+		</div>
 	</div>
 </body>
 </html>
