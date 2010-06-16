@@ -27,14 +27,6 @@
 	  var title = document.getElementById("title");
 	  title.addEventListener("click", openLink);
 
-	  //Setup Submit Link
-	  var submitLink = document.getElementById("submitLink");
-	  submitLink.addEventListener("click", submitCurrentTab);
-	
-		//Setup Refresh Link
-		var refreshLink = document.getElementById("refresh");
-		refreshLink.addEventListener("click", refreshLinks);
-
 	  for (var i=0; i<links.length; i++) {
 	    hnLink = links[i];
 	    var row = document.createElement("tr");
@@ -92,12 +84,12 @@
 			<img src="icon18.gif">
 			<a id="title" href="http://news.ycombinator.com">Hacker News</a>
 			<span>|</span>
-			<a id="submitLink" href="http://news.ycombinator.com/submitlink">Submit Current Page</a>
+			<a id="submitLink" href="javascript:submitCurrentTab()">Submit Current Page</a>
 		</div>
 		<table id="feed" cellspacing="3" cellpadding="0">
 		</table>
 		<div id="footer">
-			<a href="#refresh" id="refresh">Refresh</a> | <a href="#settings" id="settings">Settings</a>
+			<a href="javascript:refreshLinks()" id="refresh">Refresh</a> | <a href="javascript:openOptions()" id="options">Options</a>
 		</div>
 	</div>
 </body>

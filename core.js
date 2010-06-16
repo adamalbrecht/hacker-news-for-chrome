@@ -157,6 +157,11 @@ function RetrieveLinksFromLocalStorage() {
 	}
 }
 
+function openOptions() {
+	var optionsUrl = chrome.extension.getURL('options.html');
+	chrome.tabs.create({url: optionsUrl});
+}
+
 function openLink() {
   openUrl(this.href, (localStorage['HN.BackgroundTabs'] == 'false'));
 }
