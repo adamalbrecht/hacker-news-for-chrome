@@ -10,7 +10,7 @@ SetInitialOption("HN.Notifications", true);
 SetInitialOption("HN.BackgroundTabs", false);
 function startRequest() {
 	UpdateIfReady();
-	window.setTimeout(startRequest, localStorage["HN.RequestInterval"]);
+	window.setTimeout(startRequest, 60000);
 }
 
 </script>
