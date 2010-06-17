@@ -7,13 +7,13 @@
     var selectReqInterval;
     var radioNotifications;
     var radioBackgroundTabs;
-    
+   
     function initVariables() {
 			selectReqInterval = document.getElementById("RequestInterval");
 			radioNotifications = document.getElementsByName("Notifications");
 			radioBackgroundTabs = document.getElementsByName("BackgroundTabs");
     }
-    
+   
 		function restoreOptions() {
       initVariables();
 			var reqInterval = localStorage["HN.RequestInterval"];
@@ -36,18 +36,18 @@
 				}
 			}
 		}
-		
+	
 		function saveOptions() {
       var interval = selectReqInterval.children[selectReqInterval.selectedIndex].value;
       localStorage["HN.RequestInterval"] = interval;
-      
+     
 			for (var i=0; i<radioNotifications.length; i++) {
         if (radioNotifications[i].checked == true) {
           localStorage["HN.Notifications"] = radioNotifications[i].value;
           break;
         }
 			}
-			
+		
 			for (var i=0; i<radioBackgroundTabs.length; i++) {
         if (radioBackgroundTabs[i].checked == true) {
           localStorage["HN.BackgroundTabs"] = radioBackgroundTabs[i].value;
@@ -56,34 +56,52 @@
 			}
 			showElement("Saved");
 		}
-		
+	
 		function onChange() {
       hideElement("Saved");
 		}
-		
+	
 	</script>
+	<link href="style.css" rel="stylesheet" type="text/css"/>
+	<style>
+		#header {margin-bottom:20px;}
+		#container {width:85%; margin:auto;}
+		label {margin-right:10px;}
+		.second-radio {margin-left:10px;}
+		p { color:#828282;}
+		a {text-decoration:underline;}
+	</style>
 </head>
 <body onLoad="restoreOptions()">
-	<h1>Hacker News Options</h1>
-	<label for="RequestInterval">Update every:</label><br/>
-	<select id="RequestInterval" name="RequestInterval" onChange="onChange()">
-    <option value="30000">30 Seconds</option>
-		<option value="300000">5 minutes</option>
-		<option value="600000">10 minutes</option>
-		<option	value="900000">15 minutes</option>
-		<option value="1200000">20 minutes</option>
-		<option value="1800000">30 minutes</option>
-		<option value="2700000">45 minutes</option>
-		<option value="3600000">1 hour</option>
-	</select><br/><br/><br/>
-	<label for="Notifications">Show notifications for new top stories?</label><br/>
-	<input type="radio" name="Notifications" value="true" onChange="onChange()"> Yes<br/>
-	<input type="radio" name="Notifications" value="false" onChange="onChange()"> No<br/>
-	<br/><br/>
-	<label for="BackgroundTabs">Open links in background tabs?</label><br/>
-	<input type="radio" name="BackgroundTabs" value="true" onChange="onChange()"> Yes<br/>
-	<input type="radio" name="BackgroundTabs" value="false" onChange="onChange()"> No<br/>
-	<br/><br/>
-	<button onclick="saveOptions()">Save</button>
-	<span id="Saved" style="display:none;">Saved!</span>
+	<div id="container">
+		<div id="header">
+			<img src="icon18.gif" />
+			<span id="title">Options</span>
+		</div>
+		<div id="feed">
+			<label for="RequestInterval">Update stories every:</label>
+			<select id="RequestInterval" name="RequestInterval" onChange="onChange()">
+				<option value="300000">5 minutes</option>
+				<option value="600000">10 minutes</option>
+				<option	value="900000">15 minutes</option>
+				<option value="1200000">20 minutes</option>
+				<option value="1800000">30 minutes</option>
+				<option value="2700000">45 minutes</option>
+				<option value="3600000">1 hour</option>
+			</select><br/><br/><br/>
+			<label for="Notifications">Display a notification when a new story reaches #1?</label><br/>
+			<input type="radio" name="Notifications" value="true" onChange="onChange()"> Yes
+			<input type="radio" class="second-radio" name="Notifications" value="false" onChange="onChange()"> No<br/>
+			<br/><br/>
+			<label for="BackgroundTabs">Open links in background tabs?</label><br/>
+			<input type="radio" name="BackgroundTabs" value="true" onChange="onChange()"> Yes
+			<input type="radio" class="second-radio" name="BackgroundTabs" value="false" onChange="onChange()"> No<br/>
+			<br/><br/>
+			<button onclick="saveOptions()">Save</button>
+			<span id="Saved" style="display:none;">Saved!</span>
+			<br/><br/><br/>
+			<p>:: Created by <b>Adam Albrecht</b> :: <a href='http://adamalbrecht.com' target='_blank'>www.adamalbrecht.com</a> ::<p>
+		</div>
+	</div>
 </body>
+</html>

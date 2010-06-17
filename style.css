@@ -1,7 +1,7 @@
 body {font-family: verdana,helvetica, arial, sans-serif;font-size: 10pt;}
 a {text-decoration:none; color:#000;}
 a:hover {text-decoration:underline;}
-#container, #spinner { background:#F6F6EF; width:350px;}
+#container, #spinner { background:#F6F6EF;}
 #header {height:26px; background: #f60; color:#222;}
 #header img { border: 1px solid #fff; float:left; margin:3px;}
 #header a, #header span, #header h1 { color:#222; float:left; margin:5px 2px 0 5px; }
