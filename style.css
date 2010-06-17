@@ -13,5 +13,7 @@ a:hover {text-decoration:underline;}
 .link span { margin-right:3px;}
 .comments { font-size:7pt; margin-left:5px; }
 .error {white-space: nowrap;color: red;}
-#footer {float:right; font-size:11px;}
+#footer {font-size:11px;}
+.left {float:left;}
+.right {float:right;}
 #spinner {height:300px; text-align:center; padding-top:50px;}

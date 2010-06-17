@@ -22,6 +22,16 @@
 	  //Setup Title Link
 	  var title = document.getElementById("title");
 	  title.addEventListener("click", openLink);
+	
+		//Setup Last Refresh time
+		var lastRefresh = document.getElementById("lastRefresh");
+		if (localStorage["HN.LastRefresh"] != null) {
+			var d = new Date(parseFloat(localStorage["HN.LastRefresh"]));
+			lastRefresh.innerText = printTime(d);
+		}
+		else {
+			lastRefresh.innerText = "???";
+		}
 
 	  for (var i=0; i<links.length; i++) {
 	    hnLink = links[i];
@@ -90,7 +100,12 @@
 		<table id="feed" cellspacing="3" cellpadding="0">
 		</table>
 		<div id="footer">
-			<a href="javascript:refreshLinks()" id="refresh">Refresh</a> | <a href="javascript:openOptions()" id="options">Options</a>
+			<div class="left">
+				Last Refresh: <span id="lastRefresh" />
+			</div>
+			<div class="right">
+				<a href="javascript:refreshLinks()" id="refresh">Refresh</a> | <a href="javascript:openOptions()" id="options">Options</a>
+			</div>
 		</div>
 	</div>
 </body>

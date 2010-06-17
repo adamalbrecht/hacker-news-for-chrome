@@ -16,11 +16,13 @@ function UpdateIfReady() {
   if (localStorage["HN.LastRefresh"] == null) {
     UpdateFeed();
   }
-  var lastRefresh = localStorage["HN.LastRefresh"];
-  var interval = localStorage["HN.RequestInterval"];
-  if (lastRefresh + interval > (new Date()).getTime()) {
-    UpdateFeed();
-  }
+	else {
+	  var lastRefresh = parseFloat(localStorage["HN.LastRefresh"]);
+	  var interval = parseFloat(localStorage["HN.RequestInterval"]);
+	  if (lastRefresh + interval > (new Date()).getTime()) {
+	    UpdateFeed();
+	  }
+	}
 }
 
 function UpdateFeed() {
@@ -164,6 +166,29 @@ function openOptions() {
 
 function openLink() {
   openUrl(this.href, (localStorage['HN.BackgroundTabs'] == 'false'));
+}
+
+function printTime(d) {
+	var a_p = "";
+	var curr_hour = d.getHours();
+	if (curr_hour < 12)
+	{
+		a_p = "AM";
+	}
+	else
+	{
+		a_p = "PM";
+	}
+	if (curr_hour == 0)
+  {
+		curr_hour = 12;
+	}
+	if (curr_hour > 12)
+	{
+		curr_hour = curr_hour - 12;
+	}
+	var curr_min = d.getMinutes();
+	return curr_hour + ":" + curr_min + " " + a_p;
 }
 
 // Show |url| in a new tab.

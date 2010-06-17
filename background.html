@@ -4,17 +4,26 @@
 <script src="core.js" />
 <script src="json2.js" />
 <script>
-//If any options are not already set, they will be set to defaults here
-SetInitialOption("HN.RequestInterval", 1200000);
-SetInitialOption("HN.Notifications", true);
-SetInitialOption("HN.BackgroundTabs", false);
 function startRequest() {
 	UpdateIfReady();
 	window.setTimeout(startRequest, 60000);
 }
 
+function init() {
+	if (localStorage["HN.Notifications"] == null) {
+		var notification = webkitNotifications.createHTMLNotification("initialNotification.html");
+	  notification.show();
+		localStorage["HN.Notifications"] = false;
+	}
+	//If any options are not already set, they will be set to defaults here
+	SetInitialOption("HN.RequestInterval", 1200000);
+	SetInitialOption("HN.BackgroundTabs", false);
+	
+	startRequest();
+}
+
 </script>
 </head>
-<body onload='startRequest()'>
+<body onload='init()'>
 </body>
 </html>
