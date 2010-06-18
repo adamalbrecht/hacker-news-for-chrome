@@ -12,14 +12,18 @@ function SetInitialOption(key, value) {
 	}
 }
 
-function UpdateIfReady() {
-  if (localStorage["HN.LastRefresh"] == null) {
+function UpdateIfReady(force) {
+  var lastRefresh = parseFloat(localStorage["HN.LastRefresh"]);
+  var interval = parseFloat(localStorage["HN.RequestInterval"]);
+	var nextRefresh = lastRefresh + interval;
+	var curTime = parseFloat((new Date()).getTime());
+	var isReady = (curTime > nextRefresh);
+	var isNull = (localStorage["HN.LastRefresh"] == null);
+  if ((force == true) || (localStorage["HN.LastRefresh"] == null)) {
     UpdateFeed();
   }
 	else {
-	  var lastRefresh = parseFloat(localStorage["HN.LastRefresh"]);
-	  var interval = parseFloat(localStorage["HN.RequestInterval"]);
-	  if (lastRefresh + interval > (new Date()).getTime()) {
+	  if (isReady) {
 	    UpdateFeed();
 	  }
 	}
@@ -61,7 +65,7 @@ function DebugMessage(message) {
   var notification = webkitNotifications.createNotification(
     "icon48.gif",
     "DEBUG",
-    message
+    printTime(new Date()) + " :: " + message
   );
   notification.show();
 
@@ -169,26 +173,19 @@ function openLink() {
 }
 
 function printTime(d) {
-	var a_p = "";
-	var curr_hour = d.getHours();
-	if (curr_hour < 12)
-	{
-		a_p = "AM";
-	}
-	else
-	{
-		a_p = "PM";
-	}
-	if (curr_hour == 0)
-  {
-		curr_hour = 12;
-	}
-	if (curr_hour > 12)
-	{
-		curr_hour = curr_hour - 12;
-	}
-	var curr_min = d.getMinutes();
-	return curr_hour + ":" + curr_min + " " + a_p;
+	var hour   = d.getHours();
+  var minute = d.getMinutes();
+  var ap = "AM";
+  if (hour   > 11) { ap = "PM";             }
+  if (hour   > 12) { hour = hour - 12;      }
+  if (hour   == 0) { hour = 12;             }
+  if (minute < 10) { minute = "0" + minute; }
+  var timeString = hour +
+                   ':' +
+                   minute +
+                   " " +
+                   ap;
+  return timeString;
 }
 
 // Show |url| in a new tab.

@@ -4,8 +4,10 @@
 <script src="core.js" />
 <script src="json2.js" />
 <script>
+var firstRequest = true;
 function startRequest() {
-	UpdateIfReady();
+	UpdateIfReady(firstRequest);
+	firstRequest = false;
 	window.setTimeout(startRequest, 60000);
 }
 
