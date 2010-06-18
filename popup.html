@@ -23,15 +23,7 @@
 	  var title = document.getElementById("title");
 	  title.addEventListener("click", openLink);
 	
-		//Setup Last Refresh time
-		var lastRefresh = document.getElementById("lastRefresh");
-		if (localStorage["HN.LastRefresh"] != null) {
-			var d = new Date(parseFloat(localStorage["HN.LastRefresh"]));
-			lastRefresh.innerText = printTime(d);
-		}
-		else {
-			lastRefresh.innerText = "???";
-		}
+		updateLastRefreshTime();
 
 	  for (var i=0; i<links.length; i++) {
 	    hnLink = links[i];
@@ -61,13 +53,26 @@
 		showElement("container");
 	}
 	
+	function updateLastRefreshTime() {
+		//Setup Last Refresh time
+		var lastRefresh = document.getElementById("lastRefresh");
+		if (localStorage["HN.LastRefresh"] != null) {
+			var d = new Date(parseFloat(localStorage["HN.LastRefresh"]));
+			lastRefresh.innerText = printTime(d);
+		}
+		else {
+			lastRefresh.innerText = "???";
+		}
+	}
+	
 	function refreshLinks() {
 		var linkTable = document.getElementById("feed");
 		while(linkTable.hasChildNodes()) linkTable.removeChild(linkTable.firstChild); //Remove all current links
 		toggle("container");
 		toggle("spinner");
 		buildPopupAfterResponse = true;
-		UpdateFeed(null, null);
+		UpdateFeed();
+		updateLastRefreshTime();
 	}
  
 	//Submit the current tab
