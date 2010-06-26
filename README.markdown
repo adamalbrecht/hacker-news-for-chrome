@@ -5,6 +5,8 @@ This is an extension for Google Chrome that displays the latest links from Y Com
 
 
 #### Possible Future Updates:
+* Instapaper / Read it Later Integration
+* Desktop Notifications for more than just the top story
 * Login / Logout
 * Vote stories up
 * Configurable # of stories to show
