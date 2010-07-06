@@ -10,9 +10,8 @@
    
     function initVariables() {
 			selectReqInterval = document.getElementById("RequestInterval");
-			checkNotifications = document.getElementById("Notifications");
-			selectMinNotification = document.getElementById("MinNotification");
-			checkBackgroundTabs = document.getElementById("BackgroundTabs");
+			radioNotifications = document.getElementsByName("Notifications");
+			radioBackgroundTabs = document.getElementsByName("BackgroundTabs");	
     }
    
 		function restoreOptions() {
@@ -24,31 +23,37 @@
 					break;
 				}
 			}
-      if (localStorage["HN.Notifications"] == "true") {
-        checkNotifications.checked = "true";
-      }
-			var minNotification = localStorage["HN.MinNotification"];
-			for (var i=0; i<selectMinNotification.children.length; i++) {
-				if (selectMinNotification[i].value == minNotification) {
-					selectMinNotification[i].selected = "true";
-					break;
+			var notifications = localStorage["HN.Notifications"];
+			for (var i=0; i<radioNotifications.length; i++) {
+				if (radioNotifications[i].value == notifications) {
+					radioNotifications[i].checked = "true";
 				}
 			}
-      if (localStorage["HN.BackgroundTabs"] == "true") {
-        checkBackgroundTabs.checked = "true";
-      }
+			var backgroundTabs = localStorage["HN.BackgroundTabs"];
+			for (var i=0; i<radioBackgroundTabs.length; i++) {
+				if (radioBackgroundTabs[i].value == backgroundTabs) {
+					radioBackgroundTabs[i].checked = "true";
+				}
+			}
 		}
 	
 		function saveOptions() {
       var interval = selectReqInterval.children[selectReqInterval.selectedIndex].value;
       localStorage["HN.RequestInterval"] = interval;
-      
-      localStorage["HN.Notifications"] = checkNotifications.checked;
      
-      var minNotification = selectMinNotification.children[selectMinNotification.selectedIndex].value;
-      localStorage["HN.MinNotification"] = minNotification;
-			
-      localStorage["HN.BackgroundTabs"] = checkBackgroundTabs.checked;
+			for (var i=0; i<radioNotifications.length; i++) {
+        if (radioNotifications[i].checked == true) {
+          localStorage["HN.Notifications"] = radioNotifications[i].value;
+          break;
+        }
+			}
+		
+			for (var i=0; i<radioBackgroundTabs.length; i++) {
+        if (radioBackgroundTabs[i].checked == true) {
+          localStorage["HN.BackgroundTabs"] = radioBackgroundTabs[i].value;
+          break;
+        }
+			}
 		}
 	
 	</script>
@@ -56,7 +61,7 @@
 	<style>
 		#header {margin-bottom:20px;}
 		#container {width:85%; margin:auto;}
-		label {margin-right:6px;}
+		label {margin-right:10px;}
 		.second-radio {margin-left:10px;}
 		p { color:#828282;}
 		a {text-decoration:underline;}
@@ -80,18 +85,13 @@
 				<option value="2700000">45 minutes</option>
 				<option value="3600000">1 hour</option>
 			</select><br/><br/><br/>
-			<input type="checkbox" id="Notifications" value="true" onChange="saveOptions()" />
-			<label for="Notifications">Display a notification when a story reaches the top</label>
-			<select id="MinNotification" id="MinNotification" onChange="saveOptions()">
-        <option value="1">1</option>
-        <option value="3">3</option>
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="15">15</option>
-			</select>
+			<label for="Notifications">Display a notification when a new story reaches #1?</label><br/>
+			<input type="radio" name="Notifications" value="true" onChange="saveOptions()"> Yes
+			<input type="radio" class="second-radio" name="Notifications" value="false" onChange="saveOptions()"> No<br/>
 			<br/><br/>
-			<input type="checkbox" id="BackgroundTabs" value="true" onChange="saveOptions()" />
-			<label for="BackgroundTabs">Open links in background tabs</label><br/>
+			<label for="BackgroundTabs">Open links in background tabs?</label><br/>
+			<input type="radio" name="BackgroundTabs" value="true" onChange="saveOptions()"> Yes
+			<input type="radio" class="second-radio" name="BackgroundTabs" value="false" onChange="saveOptions()"> No<br/>
 			<br/><br/><br/>
 			<p>:: Created by <b>Adam Albrecht</b> :: <a href='http://adamalbrecht.com' target='_blank'>www.adamalbrecht.com</a> ::<p>
 		</div>

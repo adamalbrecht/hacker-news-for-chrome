@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script type="text/javascript" src="core.js"></script>
-<script type="text/javascript" src="json2.js"></script>
-<script type="text/javascript">
+<script src="core.js"></script>
+<script src="json2.js"></script>
+<script>
   function main() {
 		if (localStorage['HN.NumLinks'] == null)
 		{
@@ -61,6 +61,7 @@
 		toggle("spinner");
 		buildPopupAfterResponse = true;
 		UpdateFeed();
+		updateLastRefreshTime();
 	}
  
 	//Submit the current tab
