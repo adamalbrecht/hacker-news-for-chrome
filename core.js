@@ -96,9 +96,9 @@ function handleError() {
 }
 
 function handleFeedParsingFailed(error) {
-  var feed = document.getElementById("feed");
-  feed.className = "error"
-  feed.innerText = "Error: " + error;
+  //var feed = document.getElementById("feed");
+  //feed.className = "error"
+  //feed.innerText = "Error: " + error;
   localStorage["HN.LastRefresh"] = localStorage["HN.LastRefresh"] + retryMilliseconds;
 }
 
