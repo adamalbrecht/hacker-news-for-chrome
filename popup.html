@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="core.js" />
-<script src="json2.js" />
+<script src="core.js"></script>
+<script src="json2.js"></script>
 <script>
   function main() {
 		if (localStorage['HN.NumLinks'] == null)
@@ -18,6 +18,9 @@
 	function buildPopup(links) {
 	  var header = document.getElementById("header");
 	  var feed = document.getElementById("feed");
+		
+    var issueLink = document.getElementById("issues");
+    issueLink.addEventListener("click", openLinkFront);
 
 	  //Setup Title Link
 	  var title = document.getElementById("title");
@@ -92,7 +95,7 @@
 		</table>
 		<div id="footer">
 			<div class="right">
-				<a href="javascript:refreshLinks()" id="refresh">Refresh</a> | <a href="javascript:openOptions()" id="options">Options</a>
+				<a href="http://github.com/adamalbrecht/hacker-news-for-chrome/issues" id="issues">Issues?</a> | <a href="javascript:refreshLinks()" id="refresh">Refresh</a> | <a href="javascript:openOptions()" id="options">Options</a>
 			</div>
 		</div>
 	</div>

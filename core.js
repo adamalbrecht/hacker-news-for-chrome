@@ -172,6 +172,10 @@ function openLink() {
   openUrl(this.href, (localStorage['HN.BackgroundTabs'] == 'false'));
 }
 
+function openLinkFront() {
+	openUrl(this.href, true);
+}
+
 function printTime(d) {
 	var hour   = d.getHours();
   var minute = d.getMinutes();

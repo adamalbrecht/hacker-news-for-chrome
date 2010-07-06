@@ -16,12 +16,12 @@
     var storyLink = document.getElementById("StoryLink");
     storyLink.href = link.Link;
     storyLink.innerText = link.Title;
-    storyLink.addEventListener("click", openLink);
+    storyLink.addEventListener("click", openLinkFront);
     
     
     var commentsLink = document.getElementById("CommentsLink");
     commentsLink.href = link.CommentsLink;
-    commentsLink.addEventListener("click", openLink);
+    commentsLink.addEventListener("click", openLinkFront);
   }
 </script>
 <body onLoad="SetupNotification()">
