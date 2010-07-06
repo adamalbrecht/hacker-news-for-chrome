@@ -47,18 +47,33 @@ function HandleRssResponse() {
     return;
   }
  	links = parseHNLinks(doc);
- 	if (localStorage['HN.Notifications'] == 'true') {
-    if (localStorage['HN.LastNotificationTitle'] == null || localStorage['HN.LastNotificationTitle'] != links[0].Title) {
-      ShowLinkNotification(links[0]);
-      localStorage['HN.LastNotificationTitle'] = links[0].Title;
-    }
- 	}
+
+  DisplayNotifications(links);
+
 	SaveLinksToLocalStorage(links);
 	if (buildPopupAfterResponse == true) {
 		buildPopup(links);
 		buildPopupAfterResponse = false;
 	}
 	localStorage["HN.LastRefresh"] = (new Date()).getTime();
+}
+
+function DisplayNotifications(links) {
+ 	if (localStorage['HN.Notifications'] == 'true') {
+    var max = parseFloat(localStorage["HN.MinNotification"]);
+    for (var i=0; i<max; i++) {
+      for (var j=0; j<max; j++) {
+        if (localStorage["HN.Link" + i] != null) {
+          if (links[j].Title == (JSON.parse(localStorage["HN.Link" + i])).Title) {
+            break;
+          }
+        }
+      }
+      if (j == max - 1) {
+        ShowLinkNotification(links[j]);
+      }
+    }
+ 	}
 }
 
 function DebugMessage(message) {
