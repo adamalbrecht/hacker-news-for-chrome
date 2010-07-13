@@ -25,6 +25,10 @@
 	  //Setup Title Link
 	  var title = document.getElementById("title");
 	  title.addEventListener("click", openLink);
+	  
+	  //Setup search button
+	  var searchButton = document.getElementById("searchbutton");
+	  searchButton.addEventListener("click", search);
 
 	  for (var i=0; i<links.length; i++) {
 	    hnLink = links[i];
@@ -52,6 +56,21 @@
 	  }
 		hideElement("spinner");
 		showElement("container");
+	}
+	
+	function searchOnEnter(e) {
+    if (e.keyCode == 13) {
+        search();
+    }
+	}
+	
+	function search() {
+    var searchBox = document.getElementById("searchbox");
+    var keywords = searchBox.value;
+    if (keywords.length > 0) {
+      var search_url = "http://www.google.com/#hl=en&q=" + keywords + "+site%3Anews.ycombinator.com&fp=1&cad=b";
+      openUrl(search_url, true);
+    }
 	}
 	
 	function refreshLinks() {
@@ -92,7 +111,7 @@
 			<a id="submitLink" href="javascript:submitCurrentTab()">Submit Current Page</a>
 		</div>
 		<div id="search">
-      <input type="text" id="searchbox" name="searchbox" placeholder="search hacker news..." />
+      <input type="text" id="searchbox" name="searchbox" placeholder="search hacker news..." onkeypress="searchOnEnter(event)" />
       <input type="submit" id="searchbutton" value="search" />
 		</div>
 		<table id="feed" cellspacing="3" cellpadding="0">
