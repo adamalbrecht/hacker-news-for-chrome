@@ -13,15 +13,15 @@ function SetInitialOption(key, value) {
 }
 
 function UpdateIfReady(force) {
-  var lastRefresh = parseFloat(localStorage["HN.LastRefresh"]);
-  var interval = parseFloat(localStorage["HN.RequestInterval"]);
+	var lastRefresh = parseFloat(localStorage["HN.LastRefresh"]);
+	var interval = parseFloat(localStorage["HN.RequestInterval"]);
 	var nextRefresh = lastRefresh + interval;
 	var curTime = parseFloat((new Date()).getTime());
 	var isReady = (curTime > nextRefresh);
 	var isNull = (localStorage["HN.LastRefresh"] == null);
-  if ((force == true) || (localStorage["HN.LastRefresh"] == null)) {
-    UpdateFeed();
-  }
+	if ((force == true) || (localStorage["HN.LastRefresh"] == null)) {
+		UpdateFeed();
+	}
 	else {
 	  if (isReady) {
 	    UpdateFeed();
@@ -93,7 +93,8 @@ function parseXml(xml) {
     xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
     xmlDoc.async = false;
     xmlDoc.loadXML(xml);
-  } catch (e) {
+  } 
+  catch (e) {
     xmlDoc = (new DOMParser).parseFromString(xml, 'text/xml');
   }
 
@@ -178,17 +179,17 @@ function openLinkFront() {
 
 function printTime(d) {
 	var hour   = d.getHours();
-  var minute = d.getMinutes();
-  var ap = "AM";
-  if (hour   > 11) { ap = "PM";             }
-  if (hour   > 12) { hour = hour - 12;      }
-  if (hour   == 0) { hour = 12;             }
-  if (minute < 10) { minute = "0" + minute; }
-  var timeString = hour +
-                   ':' +
-                   minute +
-                   " " +
-                   ap;
+	var minute = d.getMinutes();
+	var ap = "AM";
+	if (hour   > 11) { ap = "PM";             }
+	if (hour   > 12) { hour = hour - 12;      }
+	if (hour   == 0) { hour = 12;             }
+	if (minute < 10) { minute = "0" + minute; }
+	var timeString = hour +
+					':' +
+					minute +
+					" " +
+					ap;
   return timeString;
 }
 
@@ -201,20 +202,20 @@ function openUrl(url, take_focus) {
   chrome.tabs.create({url: url, selected: take_focus});
 }
 	
-	function hideElement(id) {
-		var e = document.getElementById(id);
+function hideElement(id) {
+	var e = document.getElementById(id);
+	e.style.display = 'none';
+}
+
+function showElement(id) {
+	var e = document.getElementById(id);
+	e.style.display = 'block';
+}
+
+function toggle(id) {
+	var e = document.getElementById(id);
+	if(e.style.display == 'block')
 		e.style.display = 'none';
-	}
-	
-	function showElement(id) {
-		var e = document.getElementById(id);
-    	e.style.display = 'block';
-	}
-	
-	function toggle(id) {
-     var e = document.getElementById(id);
-     if(e.style.display == 'block')
-        e.style.display = 'none';
-     else
-        e.style.display = 'block';
-  }
+	else
+		e.style.display = 'block';
+}

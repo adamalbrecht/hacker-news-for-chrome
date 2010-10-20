@@ -14,12 +14,14 @@ function startRequest() {
 function init() {
 	if (localStorage["HN.Notifications"] == null) {
 		var notification = webkitNotifications.createHTMLNotification("initialNotification.html");
-	  notification.show();
+		notification.show();
 		localStorage["HN.Notifications"] = false;
 	}
 	//If any options are not already set, they will be set to defaults here
 	SetInitialOption("HN.RequestInterval", 1200000);
 	SetInitialOption("HN.BackgroundTabs", false);
+	SetInitialOption("HN.InstapaperUsername",'');
+	SetInitialOption("HN.InstapaperPassword",'');
 	
 	startRequest();
 }

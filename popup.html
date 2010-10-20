@@ -4,73 +4,80 @@
 <script src="core.js"></script>
 <script src="json2.js"></script>
 <script>
-  function main() {
-		if (localStorage['HN.NumLinks'] == null)
-		{
+	function main() {
+		if (localStorage['HN.NumLinks'] == null) {
 			buildPopupAfterResponse = true;
 			UpdateFeed();
 		}
 		else {
 			buildPopup(RetrieveLinksFromLocalStorage());
 		}
-  }
+	}
 
 	function buildPopup(links) {
-	  var header = document.getElementById("header");
-	  var feed = document.getElementById("feed");
+		var header = document.getElementById("header");
+		var feed = document.getElementById("feed");
+		var issueLink = document.getElementById("issues");
+		issueLink.addEventListener("click", openLinkFront);
+
+		//Setup Title Link
+		var title = document.getElementById("title");
+		title.addEventListener("click", openLink);
 		
-    var issueLink = document.getElementById("issues");
-    issueLink.addEventListener("click", openLinkFront);
+		//Setup search button
+		var searchButton = document.getElementById("searchbutton");
+		searchButton.addEventListener("click", search);
 
-	  //Setup Title Link
-	  var title = document.getElementById("title");
-	  title.addEventListener("click", openLink);
-	  
-	  //Setup search button
-	  var searchButton = document.getElementById("searchbutton");
-	  searchButton.addEventListener("click", search);
-
-	  for (var i=0; i<links.length; i++) {
-	    hnLink = links[i];
-	    var row = document.createElement("tr");
-	    row.className = "link";
+		for (var i=0; i<links.length; i++) {
+			hnLink = links[i];
+			var row = document.createElement("tr");
+			row.className = "link";
 			var num = document.createElement("td");
 			num.innerText = i+1;
 			var link_col = document.createElement("td")
-	    var title = document.createElement("a");
-	    title.className = "link_title";
-	    title.innerText = hnLink.Title;
-	    title.href = hnLink.Link;
-	    title.addEventListener("click", openLink);
-	    var comments = document.createElement("a");
-			comments.className = "comments";
-			comments.innerText = "(comments)";
-			comments.href = hnLink.CommentsLink;
-			comments.addEventListener("click", openLink);
-
+			var title = document.createElement("a");
+				title.className = "link_title";
+				title.innerText = hnLink.Title;
+				title.href = hnLink.Link;
+				title.addEventListener("click", openLink);
+			var comments = document.createElement("a");
+				comments.className = "comments";
+				comments.innerText = "(comments)";
+				comments.href = hnLink.CommentsLink;
+				comments.addEventListener("click", openLink);
+			var instapaper = document.createElement("a");
+				instapaper.className = "comments";
+				instapaper.innerText = "(add to instapaper)";
+				instapaper.url = hnLink.Link.replace('http://','');
+				if (localStorage['HN.InstapaperPassword'].length > 0)
+					instapaper.href = "https://www.instapaper.com/api/add?username="+localStorage['HN.InstapaperUsername']+"&password="+localStorage['HN.InstapaperPassword']+"&url="+instapaper.url+"&redirect=close";
+				else
+					instapaper.href = "https://www.instapaper.com/api/add?username="+localStorage['HN.InstapaperUsername']+"&url="+instapaper.url+"&redirect=close";			
+				instapaper.addEventListener("click",openLink);
 			link_col.appendChild(title);
 			link_col.appendChild(comments);
-	    row.appendChild(num);
+			link_col.appendChild(instapaper);
+			row.appendChild(num);
 			row.appendChild(link_col)
-	    feed.appendChild(row);
-	  }
+			feed.appendChild(row);
+		}
 		hideElement("spinner");
 		showElement("container");
 	}
 	
 	function searchOnEnter(e) {
-    if (e.keyCode == 13) {
-        search();
-    }
+		if (e.keyCode == 13) {
+			search();
+		}
 	}
 	
 	function search() {
-    var searchBox = document.getElementById("searchbox");
-    var keywords = searchBox.value;
-    if (keywords.length > 0) {
-      var search_url = "http://www.google.com/#hl=en&q=" + keywords + "+site%3Anews.ycombinator.com&fp=1&cad=b";
-      openUrl(search_url, true);
-    }
+		var searchBox = document.getElementById("searchbox");
+		var keywords = searchBox.value;
+		if (keywords.length > 0) {
+		  var search_url = "http://www.google.com/#hl=en&q=" + keywords + "+site%3Anews.ycombinator.com&fp=1&cad=b";
+		  openUrl(search_url, true);
+		}
 	}
 	
 	function refreshLinks() {
@@ -118,7 +125,7 @@
 		</table>
 		<div id="footer">
 			<div class="right">
-				<a href="http://github.com/adamalbrecht/hacker-news-for-chrome/issues" id="issues">Issues?</a> | <a href="javascript:refreshLinks()" id="refresh">Refresh</a> | <a href="javascript:openOptions()" id="options">Options</a>
+				<a href="http://github.com/johnmichel/hacker-news-for-chrome/issues" id="issues">Issues?</a> | <a href="javascript:refreshLinks()" id="refresh">Refresh</a> | <a href="javascript:openOptions()" id="options">Options</a>
 			</div>
 		</div>
 	</div>
