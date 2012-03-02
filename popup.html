@@ -45,18 +45,8 @@
 				comments.innerText = "(comments)";
 				comments.href = hnLink.CommentsLink;
 				comments.addEventListener("click", openLink);
-			var instapaper = document.createElement("a");
-				instapaper.className = "comments";
-				instapaper.innerText = "(add to instapaper)";
-				instapaper.url = hnLink.Link.replace('http://','');
-				if (localStorage['HN.InstapaperPassword'].length > 0)
-					instapaper.href = "https://www.instapaper.com/api/add?username="+localStorage['HN.InstapaperUsername']+"&password="+localStorage['HN.InstapaperPassword']+"&url="+instapaper.url+"&redirect=close";
-				else
-					instapaper.href = "https://www.instapaper.com/api/add?username="+localStorage['HN.InstapaperUsername']+"&url="+instapaper.url+"&redirect=close";			
-				instapaper.addEventListener("click",openLink);
 			link_col.appendChild(title);
 			link_col.appendChild(comments);
-			link_col.appendChild(instapaper);
 			row.appendChild(num);
 			row.appendChild(link_col)
 			feed.appendChild(row);

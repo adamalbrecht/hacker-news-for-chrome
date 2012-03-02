@@ -7,15 +7,11 @@
 		var selectReqInterval;
 		var radioNotifications;
 		var radioBackgroundTabs;
-		var instapaperUsername;
-		var instapaperPassword;
 	   
 		function initVariables() {
 			selectReqInterval = document.getElementById("RequestInterval");
 			radioNotifications = document.getElementsByName("Notifications");
 			radioBackgroundTabs = document.getElementsByName("BackgroundTabs");
-			instapaperUsername = document.getElementsByName("InstapaperUsername");
-			instapaperPassword = document.getElementsByName("InstapaperPassword");
 		}
 	   
 		function restoreOptions() {
@@ -39,8 +35,6 @@
 					radioBackgroundTabs[i].checked = "true";
 				}
 			}
-			var instapaperUsername = localStorage["HN.InstapaperUsername"];
-			var instapaperPassword = localStorage["HN.InstapaperPassword"];
 		}
 		
 		function saveOptions() {
@@ -60,13 +54,6 @@
 		  			break;
 				}
 			}
-			
-			var instaUser = document.getElementById('instaUser').value;
-			var instaPass = document.getElementById('instaPass').value;
-			
-			if (instaUser.length > 0)
-				localStorage["HN.InstapaperUsername"] = instaUser;
-			localStorage["HN.InstapaperPassword"] = instaPass;
 		}
 	</script>
 	<link href="style.css" rel="stylesheet" type="text/css"/>
@@ -104,16 +91,10 @@
 			<label for="BackgroundTabs">Open story links in background tabs?</label><br/>
 			<input type="radio" name="BackgroundTabs" value="true" onChange="saveOptions()"> Yes
 			<input type="radio" class="second-radio" name="BackgroundTabs" value="false" onChange="saveOptions()"> No<br/>
-			<br/><br/>
-            <label for="Instapaper">Save links to Instapaper?</label><br />
-            <label class="instapaper" for="InstapaperUsername">Username</label><input id='instaUser' type="text" name="InstapaperUsername"><br />
-            <label class="instapaper" for="InstapaperPassword">Password</label><input id='instaPass' type="password" name="InstapaperPassword"><br />
-            <input type="submit" onclick="saveOptions()" value="Save Instapaper Account Credentials" />
 			<p class='right'>
         <a href='http://github.com/johnmichel/hacker-news-for-chrome/issues' target='_blank'>Report an Issue</a>
 			</p>
 			<p>:: Created by <b>Adam Albrecht</b> :: <a href='http://adamalbrecht.com' target='_blank'>www.adamalbrecht.com</a><p>
-            <p>:: Modified by <strong>John Michel</strong> :: <a href='http://cowbird.org' target='_blank'>www.cowbird.org</a></p>
 		</div>
 	</div>
 </body>
