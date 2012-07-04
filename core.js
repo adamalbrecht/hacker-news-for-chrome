@@ -61,6 +61,10 @@ function HandleRssResponse() {
 	localStorage["HN.LastRefresh"] = (new Date()).getTime();
 }
 
+function updateLastRefreshTime() {
+	localStorage["HN.LastRefresh"] = (new Date()).getTime();
+}
+
 function DebugMessage(message) {
   var notification = webkitNotifications.createNotification(
     "icon48.gif",
