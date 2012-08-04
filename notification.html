@@ -21,8 +21,13 @@
     var commentsLink = document.getElementById("CommentsLink");
     commentsLink.href = link.CommentsLink;
     commentsLink.addEventListener("click", openLinkFront);
+
+    setTimeout(function() {
+        window.close();
+    }, 10000);
   }
 </script>
+</head>
 <body onLoad="SetupNotification()">
   <div id="header">
     <img src="icon18.gif"/>
