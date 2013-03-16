@@ -1,4 +1,4 @@
-var feedUrl = 'http://news.ycombinator.com/rss';
+var feedUrl = 'https://news.ycombinator.com/rss';
 var maxFeedItems = 15;
 var req;
 var buildPopupAfterResponse = false;
@@ -38,6 +38,7 @@ function UpdateFeed() {
 }
 
 function HandleRssResponse() {
+  console.log(req);
   var doc = req.responseXML;
   if (!doc) {
     doc = parseXml(req.responseText);
@@ -80,7 +81,7 @@ function ShowLinkNotification(link) {
   notification.show();
 }
 
-function handleError() {
+function handleError(e, msg, something) {
   handleFeedParsingFailed('Failed to fetch RSS feed.');
 }
 
