@@ -30,16 +30,22 @@ function UpdateIfReady(force) {
 }
 
 function UpdateFeed() {
-  req = new XMLHttpRequest();
-  req.onload = HandleRssResponse;
-  req.onerror = handleError;
-  req.open("GET", feedUrl, true);
-  req.send(null);
+  //req = new XMLHttpRequest();
+  //req.onload = HandleRssResponse;
+  //req.onerror = handleError;
+  //req.open("GET", feedUrl, true);
+  //req.send(null);
+  $.ajax({
+    type:'GET',
+    dataType:'xml',
+    url:'https://news.ycombinator.com/rss',
+    timeout:500,
+    success:onRssSuccess,
+    error:onRssError
+  });
 }
 
-function HandleRssResponse() {
-  console.log(req);
-  var doc = req.responseXML;
+function onRssSuccess(doc) {
   if (!doc) {
     doc = parseXml(req.responseText);
   }
@@ -81,7 +87,7 @@ function ShowLinkNotification(link) {
   notification.show();
 }
 
-function handleError(e, msg, something) {
+function onRssError(xhr, type) {
   handleFeedParsingFailed('Failed to fetch RSS feed.');
 }
 
