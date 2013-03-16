@@ -30,25 +30,10 @@ function UpdateIfReady(force) {
 }
 
 function UpdateFeed() {
-  //req = new XMLHttpRequest();
-  //req.onload = HandleRssResponse;
-  //req.onerror = handleError;
-  //req.open("GET", feedUrl, true);
-  //req.send(null);
-  $.ajax({
-    type:'GET',
-    dataType:'xml',
-    url:'https://news.ycombinator.com/rss',
-    timeout:500,
-    success:onRssSuccess,
-    error:onRssError
-  });
+  $.ajax({type:'GET', dataType:'xml', url: feedUrl, timeout:2000, success:onRssSuccess, error:onRssError});
 }
 
 function onRssSuccess(doc) {
-  if (!doc) {
-    doc = parseXml(req.responseText);
-  }
   if (!doc) {
     handleFeedParsingFailed("Not a valid feed.");
     return;
