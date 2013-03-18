@@ -1,4 +1,3 @@
-var feedUrl = 'https://news.ycombinator.com/rss';
 var maxFeedItems = 15;
 var req;
 var buildPopupAfterResponse = false;
@@ -30,7 +29,7 @@ function UpdateIfReady(force) {
 }
 
 function UpdateFeed() {
-  $.ajax({type:'GET', dataType:'xml', url: feedUrl, timeout:2000, success:onRssSuccess, error:onRssError});
+  $.ajax({type:'GET', dataType:'xml', url: 'https://news.ycombinator.com/rss', timeout:5000, success:onRssSuccess, error:onRssError});
 }
 
 function onRssSuccess(doc) {
@@ -72,7 +71,7 @@ function ShowLinkNotification(link) {
   notification.show();
 }
 
-function onRssError(xhr, type) {
+function onRssError(xhr, type, error) {
   handleFeedParsingFailed('Failed to fetch RSS feed.');
 }
 

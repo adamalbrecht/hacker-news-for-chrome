@@ -19,3 +19,11 @@ a:hover {text-decoration:underline;}
 #spinner {height:300px; text-align:center; padding-top:50px;}
 #searchbox { margin:12px 3px 0 26px; font-size:11px; width:215px;}
 #searchbutton {font-family:courier;}
+
+#OptionsPage #header {margin-bottom:20px;}
+#OptionsPage #container {width:85%; margin:auto;}
+#OptionsPage label {margin-right:10px;}
+#OptionsPage .second-radio {margin-left:10px;}
+#OptionsPage p { color:#828282;}
+#OptionsPage a {text-decoration:underline;}
+#OptionsPage #feed {margin-left:10px;}

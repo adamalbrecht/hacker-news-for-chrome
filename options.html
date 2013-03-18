@@ -2,72 +2,13 @@
 <html>
 <head>
 	<title>Hacker News for Google Chrome Options</title>
+	<script src="jquery.js"></script>
 	<script src="core.js"></script>
 	<script>
-		var selectReqInterval;
-		var radioNotifications;
-		var radioBackgroundTabs;
-	   
-		function initVariables() {
-			selectReqInterval = document.getElementById("RequestInterval");
-			radioNotifications = document.getElementsByName("Notifications");
-			radioBackgroundTabs = document.getElementsByName("BackgroundTabs");
-		}
-	   
-		function restoreOptions() {
-			initVariables();
-			var reqInterval = localStorage["HN.RequestInterval"];
-			for (var i=0; i<selectReqInterval.children.length; i++) {
-				if (selectReqInterval[i].value == reqInterval) {
-					selectReqInterval[i].selected = "true";
-					break;
-				}
-			}
-			var notifications = localStorage["HN.Notifications"];
-			for (var i=0; i<radioNotifications.length; i++) {
-				if (radioNotifications[i].value == notifications) {
-					radioNotifications[i].checked = "true";
-				}
-			}
-			var backgroundTabs = localStorage["HN.BackgroundTabs"];
-			for (var i=0; i<radioBackgroundTabs.length; i++) {
-				if (radioBackgroundTabs[i].value == backgroundTabs) {
-					radioBackgroundTabs[i].checked = "true";
-				}
-			}
-		}
-		
-		function saveOptions() {
-			var interval = selectReqInterval.children[selectReqInterval.selectedIndex].value;
-			localStorage["HN.RequestInterval"] = interval;
-		
-			for (var i=0; i<radioNotifications.length; i++) {
-				if (radioNotifications[i].checked) {
-		  			localStorage["HN.Notifications"] = radioNotifications[i].value;
-		  			break;
-				}
-			}
-		
-			for (var i=0; i<radioBackgroundTabs.length; i++) {
-				if (radioBackgroundTabs[i].checked) {
-		  			localStorage["HN.BackgroundTabs"] = radioBackgroundTabs[i].value;
-		  			break;
-				}
-			}
-		}
 	</script>
 	<link href="style.css" rel="stylesheet" type="text/css"/>
-	<style>
-		#header {margin-bottom:20px;}
-		#container {width:85%; margin:auto;}
-		label {margin-right:10px;}
-		.second-radio {margin-left:10px;}
-		p { color:#828282;}
-		a {text-decoration:underline;}
-		#feed {margin-left:10px;}
-	</style>
 </head>
-<body onLoad="restoreOptions()">
+<body id='OptionsPage'>
 	<div id="container">
 		<div id="header">
 			<img src="icon18.gif" />
@@ -75,7 +16,7 @@
 		</div>
 		<div id="feed">
 			<label for="RequestInterval">Update stories every:</label>
-			<select id="RequestInterval" name="RequestInterval" onChange="saveOptions()">
+			<select id="RequestInterval" name="RequestInterval">
 				<option value="300000">5 minutes</option>
 				<option value="600000">10 minutes</option>
 				<option	value="900000">15 minutes</option>
@@ -85,14 +26,14 @@
 				<option value="3600000">1 hour</option>
 			</select><br/><br/><br/>
 			<label for="Notifications">Display a notification when a new story reaches #1?</label><br/>
-			<input type="radio" name="Notifications" value="true" onChange="saveOptions()"> Yes
-			<input type="radio" class="second-radio" name="Notifications" value="false" onChange="saveOptions()"> No<br/>
+			<input class='notifications-radio' type="radio" name="Notifications" value="true"> Yes
+			<input class='notifications-radio' type="radio" class="second-radio" name="Notifications" value="false"> No<br/>
 			<br/><br/>
 			<label for="BackgroundTabs">Open story links in background tabs?</label><br/>
-			<input type="radio" name="BackgroundTabs" value="true" onChange="saveOptions()"> Yes
-			<input type="radio" class="second-radio" name="BackgroundTabs" value="false" onChange="saveOptions()"> No<br/>
+			<input type="radio" class='background-tabs-radio' name="BackgroundTabs" value="true"> Yes
+			<input type="radio" class="second-radio background-tabs-radio" name="BackgroundTabs" value="false"> No<br/>
 			<p class='right'>
-        <a href='http://github.com/johnmichel/hacker-news-for-chrome/issues' target='_blank'>Report an Issue</a>
+        <a href='http://github.com/adamalbrecht/hacker-news-for-chrome/issues' target='_blank'>Report an Issue</a>
 			</p>
 			<p>:: Created by <b>Adam Albrecht</b> :: <a href='http://adamalbrecht.com' target='_blank'>www.adamalbrecht.com</a><p>
 		</div>

@@ -3,9 +3,13 @@ window.onload = function(){
   setupEvents();
 };
 function setupEvents() {
-  document.getElementById('submitLink').addEventListener('click', submitCurrentTab);
-  document.getElementById('refresh').addEventListener('click', refreshLinks);
-  document.getElementById('searchbox').addEventListener('keypress', searchOnEnter);
+  $('#submitLink').click(submitCurrentTab);
+  $('#refresh').click(refreshLinks);
+  $('#searchbox').keypress(searchOnEnter);
+  $('a#options').click(function(){
+    console.log("CLICKED THE OPTIONS LINK");
+    openOptions();
+  });
 }
 function main() {
   if (localStorage['HN.NumLinks'] == null) {
