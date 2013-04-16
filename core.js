@@ -29,7 +29,7 @@ function UpdateIfReady(force) {
 }
 
 function UpdateFeed() {
-  $.ajax({type:'GET', dataType:'xml', url: 'https://news.ycombinator.com/rss', timeout:5000, success:onRssSuccess, error:onRssError});
+  $.ajax({type:'GET', dataType:'xml', url: 'https://news.ycombinator.com/rss', timeout:5000, success:onRssSuccess, error:onRssError, async: false});
 }
 
 function onRssSuccess(doc) {
