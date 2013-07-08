@@ -10,25 +10,9 @@
 </style>
 <script src="core.js"></script>
 <script src="json2.js"></script>
-<script>
-  function SetupNotification() {
-    var link = JSON.parse(localStorage['HN.Link0']);
-    var storyLink = document.getElementById("StoryLink");
-    storyLink.href = link.Link;
-    storyLink.innerText = link.Title;
-    storyLink.addEventListener("click", openLinkFront);
-    
-    var commentsLink = document.getElementById("CommentsLink");
-    commentsLink.href = link.CommentsLink;
-    commentsLink.addEventListener("click", openLinkFront);
-
-    setTimeout(function() {
-        window.close();
-    }, 10000);
-  }
-</script>
+<script src="notification.js"></script>
 </head>
-<body onLoad="SetupNotification()">
+<body>
   <div id="header">
     <img src="icon18.gif"/>
     <span>Hacker News Top Story</span>
