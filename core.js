@@ -52,12 +52,11 @@ function updateLastRefreshTime() {
 
 function DebugMessage(message) {
   var notification = webkitNotifications.createNotification(
-    "icon48.gif",
+    "icon48.png",
     "DEBUG",
     printTime(new Date()) + " :: " + message
   );
   notification.show();
-
 }
 
 
