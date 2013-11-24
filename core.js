@@ -38,12 +38,6 @@ function onRssSuccess(doc) {
     return;
   }
  	links = parseHNLinks(doc);
- 	if (localStorage['HN.Notifications'] == 'true') {
-    if (localStorage['HN.LastNotificationTitle'] == null || localStorage['HN.LastNotificationTitle'] != links[0].Title) {
-      ShowLinkNotification(links[0]);
-      localStorage['HN.LastNotificationTitle'] = links[0].Title;
-    }
- 	}
 	SaveLinksToLocalStorage(links);
 	if (buildPopupAfterResponse == true) {
 		buildPopup(links);
@@ -66,10 +60,6 @@ function DebugMessage(message) {
 
 }
 
-function ShowLinkNotification(link) {
-  var notification = webkitNotifications.createHTMLNotification("notification.html");
-  notification.show();
-}
 
 function onRssError(xhr, type, error) {
   handleFeedParsingFailed('Failed to fetch RSS feed.');
