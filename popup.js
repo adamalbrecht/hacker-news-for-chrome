@@ -7,7 +7,6 @@ function setupEvents() {
   $('#refresh').click(refreshLinks);
   $('#searchbox').keypress(searchOnEnter);
   $('a#options').click(function(){
-    console.log("CLICKED THE OPTIONS LINK");
     openOptions();
   });
 }
@@ -78,7 +77,6 @@ function search() {
 }
 
 function refreshLinks() {
-  console.log('refreshing!');
   var linkTable = document.getElementById("feed");
   while(linkTable.hasChildNodes()) linkTable.removeChild(linkTable.firstChild); //Remove all current links
   toggle("container");
