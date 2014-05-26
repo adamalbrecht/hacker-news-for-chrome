@@ -153,11 +153,13 @@ function openOptions() {
 	chrome.tabs.create({url: optionsUrl});
 }
 
-function openLink() {
+function openLink(e) {
+  e.preventDefault();
   openUrl(this.href, (localStorage['HN.BackgroundTabs'] == 'false'));
 }
 
-function openLinkFront() {
+function openLinkFront(e) {
+	e.preventDefault();
 	openUrl(this.href, true);
 }
 
