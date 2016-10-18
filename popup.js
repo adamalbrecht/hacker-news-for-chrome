@@ -71,7 +71,7 @@ function search() {
   var searchBox = document.getElementById("searchbox");
   var keywords = searchBox.value;
   if (keywords.length > 0) {
-    var search_url = "https://www.hnsearch.com/search#request/all&q=" + keywords.replace(" ", "+") + "&start=0";
+    var search_url = "https://hn.algolia.com/?query=" + keywords.replace(" ", "+");
     openUrl(search_url, true);
   }
 }
