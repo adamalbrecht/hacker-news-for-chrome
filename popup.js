@@ -87,7 +87,7 @@ function submitCurrentTab() {
   console.log('submitCurrentTab!');
   chrome.windows.getCurrent(function(win){
     chrome.tabs.getSelected(win.id, function(tab){
-      var submit_url = "http://news.ycombinator.com/submitlink?u=" + encodeURIComponent(tab.url) + "&t=" + encodeURIComponent(tab.title);
+      var submit_url = "https://news.ycombinator.com/submitlink?u=" + encodeURIComponent(tab.url) + "&t=" + encodeURIComponent(tab.title);
       openUrl(submit_url, true);
     });
   });

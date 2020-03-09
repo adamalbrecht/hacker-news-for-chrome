@@ -16,8 +16,7 @@
   "options_page":"options.html",
   "permissions": [
     "tabs",
-    "https://news.ycombinator.com/",
-    "http://news.ycombinator.com/"
+    "https://news.ycombinator.com/"
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://news.ycombinator.com; object-src 'self' 'unsafe-eval' https://news.ycombinator.com"
 }
