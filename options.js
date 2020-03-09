@@ -1,9 +1,8 @@
-$(function(){
+document.addEventListener("DOMContentLoaded", function(){
   restoreOptions();
-  $('.notifications-radio, .background-tabs-radio, #RequestInterval').change(function(){
-    saveOptions();
-  });
+  document.getElementById("SaveButton").addEventListener('click', saveOptions, false);
 });
+
 var selectReqInterval;
 var radioNotifications;
 var radioBackgroundTabs;

@@ -29,10 +29,21 @@ function UpdateIfReady(force) {
 }
 
 function UpdateFeed() {
-  $.ajax({type:'GET', dataType:'xml', url: 'https://news.ycombinator.com/rss', timeout:5000, success:onRssSuccess, error:onRssError, async: false});
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://news.ycombinator.com/rss');
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      onRssSuccess(xhr.responseText);
+    }
+    else {
+      onRssError();
+    }
+  };
+  xhr.send();
 }
 
 function onRssSuccess(doc) {
+  console.log('doc', doc);
   if (!doc) {
     handleFeedParsingFailed("Not a valid feed.");
     return;
@@ -49,16 +60,6 @@ function onRssSuccess(doc) {
 function updateLastRefreshTime() {
   localStorage["HN.LastRefresh"] = (new Date()).getTime();
 }
-
-function DebugMessage(message) {
-  var notification = webkitNotifications.createNotification(
-    "icon48.png",
-    "DEBUG",
-    printTime(new Date()) + " :: " + message
-  );
-  notification.show();
-}
-
 
 function onRssError(xhr, type, error) {
   handleFeedParsingFailed('Failed to fetch RSS feed.');
@@ -85,7 +86,9 @@ function parseXml(xml) {
   return xmlDoc;
 }
 
-function parseHNLinks(doc) {
+function parseHNLinks(rawXmlStr) {
+  var parser = new DOMParser();
+  var doc = parser.parseFromString(rawXmlStr, "text/xml");
   var entries = doc.getElementsByTagName('entry');
   if (entries.length == 0) {
     entries = doc.getElementsByTagName('item');

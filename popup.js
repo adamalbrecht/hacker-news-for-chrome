@@ -3,11 +3,13 @@ window.onload = function(){
   setupEvents();
 };
 function setupEvents() {
-  $('#submitLink').click(submitCurrentTab);
-  $('#refresh').click(refreshLinks);
-  $('#searchbox').keypress(searchOnEnter);
-  $('a#options').click(function(){
-    openOptions();
+  document.getElementById("submitLink").addEventListener('click', submitCurrentTab, false);
+  document.getElementById("refresh").addEventListener('click', refreshLinks, false);
+  document.getElementById("options").addEventListener('click', openOptions, false);
+  document.getElementById("searchbox").addEventListener('keydown', function(event) {
+    if (event.which === 13) {
+      search();
+    }
   });
 }
 function main() {
@@ -61,12 +63,6 @@ function buildPopup(links) {
   showElement("container");
 }
 
-function searchOnEnter(e) {
-  if (e.keyCode == 13) {
-    search();
-  }
-}
-
 function search() {
   var searchBox = document.getElementById("searchbox");
   var keywords = searchBox.value;
@@ -88,6 +84,7 @@ function refreshLinks() {
 
 //Submit the current tab
 function submitCurrentTab() {
+  console.log('submitCurrentTab!');
   chrome.windows.getCurrent(function(win){
     chrome.tabs.getSelected(win.id, function(tab){
       var submit_url = "http://news.ycombinator.com/submitlink?u=" + encodeURIComponent(tab.url) + "&t=" + encodeURIComponent(tab.title);
